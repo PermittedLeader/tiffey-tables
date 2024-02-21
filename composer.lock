@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45e984b51a05d59901881ebcef44c76a",
+    "content-hash": "4b6b55105a081a16aad0b901d2bfd339",
     "packages": [
         {
             "name": "brick/math",
@@ -864,16 +864,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.44.0",
+            "version": "v10.45.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "1199dbe361787bbe9648131a79f53921b4148cf6"
+                "reference": "8b08d8cd79f8093eb51a8c59e21647bedfbf05f2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/1199dbe361787bbe9648131a79f53921b4148cf6",
-                "reference": "1199dbe361787bbe9648131a79f53921b4148cf6",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/8b08d8cd79f8093eb51a8c59e21647bedfbf05f2",
+                "reference": "8b08d8cd79f8093eb51a8c59e21647bedfbf05f2",
                 "shasum": ""
             },
             "require": {
@@ -1066,7 +1066,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-02-13T16:01:16+00:00"
+            "time": "2024-02-20T15:32:48+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -1581,16 +1581,16 @@
         },
         {
             "name": "livewire/livewire",
-            "version": "v3.4.5",
+            "version": "v3.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/livewire/livewire.git",
-                "reference": "266ee3dcaef540f666d4eee19a314025aba5c6e4"
+                "reference": "7e7d638183b34fb61621455891869f5abfd55a82"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/livewire/livewire/zipball/266ee3dcaef540f666d4eee19a314025aba5c6e4",
-                "reference": "266ee3dcaef540f666d4eee19a314025aba5c6e4",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/7e7d638183b34fb61621455891869f5abfd55a82",
+                "reference": "7e7d638183b34fb61621455891869f5abfd55a82",
                 "shasum": ""
             },
             "require": {
@@ -1644,7 +1644,7 @@
             "description": "A front-end framework for Laravel.",
             "support": {
                 "issues": "https://github.com/livewire/livewire/issues",
-                "source": "https://github.com/livewire/livewire/tree/v3.4.5"
+                "source": "https://github.com/livewire/livewire/tree/v3.4.6"
             },
             "funding": [
                 {
@@ -1652,7 +1652,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-02-19T14:52:03+00:00"
+            "time": "2024-02-20T14:04:25+00:00"
         },
         {
             "name": "maatwebsite/excel",
@@ -2364,6 +2364,101 @@
                 }
             ],
             "time": "2023-02-08T01:06:31+00:00"
+        },
+        {
+            "name": "permittedleader/flash-messages",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../flash-messages",
+                "reference": "b3e4fd1b77bbd10776a570c3b7c40099104fc2a6"
+            },
+            "require": {
+                "laravel/framework": "^10.45"
+            },
+            "require-dev": {
+                "orchestra/testbench": "^8.21",
+                "pestphp/pest": "^2.34",
+                "pestphp/pest-plugin-laravel": "^2.3"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Permittedleader\\FlashMessages\\FlashMessagesServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Permittedleader\\FlashMessages\\": "src/"
+                }
+            },
+            "license": [
+                "GNU GPLv3"
+            ],
+            "authors": [
+                {
+                    "name": "Myles Smith",
+                    "email": "159888845+PermittedLeader@users.noreply.github.com"
+                }
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
+        },
+        {
+            "name": "permittedleader/tiffey",
+            "version": "dev-main",
+            "dist": {
+                "type": "path",
+                "url": "../tiffey",
+                "reference": "db1e05ecd8a8bab6e7ba8c26d034974c7394dab9"
+            },
+            "require": {
+                "laravel/framework": "^10.0"
+            },
+            "require-dev": {
+                "barryvdh/laravel-debugbar": "^3.10",
+                "pestphp/pest": "^2.33",
+                "pestphp/pest-plugin-laravel": "^2.2"
+            },
+            "type": "project",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Permittedleader\\Tiffey\\TiffeyServiceProvider"
+                    ]
+                },
+                "branch-alias": {
+                    "dev-main": "1.0.x-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers.php"
+                ],
+                "psr-4": {
+                    "Permittedleader\\Tiffey\\": "src/"
+                }
+            },
+            "license": [
+                "GNU GPL v3"
+            ],
+            "authors": [
+                {
+                    "name": "Myles Smith",
+                    "email": "159888845+PermittedLeader@users.noreply.github.com"
+                }
+            ],
+            "transport-options": {
+                "symlink": true,
+                "relative": true
+            }
         },
         {
             "name": "phpoffice/phpspreadsheet",
@@ -10085,7 +10180,10 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "permittedleader/tiffey": 20,
+        "permittedleader/flash-messages": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": [],

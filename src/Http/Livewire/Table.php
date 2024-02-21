@@ -11,6 +11,7 @@ use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Permittedleader\FlashMessages\FlashMessages;
 use Permittedleader\TablesForLaravel\View\Components\Columns\Column;
 use Permittedleader\TablesForLaravel\View\Components\Columns\Interfaces\UsesRelationships;
 
@@ -18,13 +19,14 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 {
     use Exportable;
     use WithPagination;
+    use FlashMessages;
 
     public bool $isSearchable = false;
 
     public bool $isExportable = false;
 
     public bool $isFilterable = true;
-    
+
     public int $perPage = 10;
 
     public $page = 1;

@@ -5,7 +5,9 @@
     "require": {
         "laravel/framework": "^10.44",
         "livewire/livewire": "^3.0",
-        "maatwebsite/excel": "^3.1"
+        "maatwebsite/excel": "^3.1",
+        "permittedleader/tiffey": "^1.0.0-dev",
+        "permittedleader/flash-messages": "^1.0.0-dev"
     },
     "require-dev": {
         "pestphp/pest": "^2.34",
@@ -23,6 +25,22 @@
     "autoload": {
         "psr-4": {
             "Permittedleader\\TablesForLaravel\\": "src/"
+        }
+    },
+    "repositories": {
+        "flash-messages": {
+            "type": "path",
+            "url": "../flash-messages",
+            "options": {
+                "symlink": true
+            }
+        },
+        "tiffey": {
+            "type": "path",
+            "url": "../tiffey",
+            "options": {
+                "symlink": true
+            }
         }
     },
     "minimum-stability": "stable",
