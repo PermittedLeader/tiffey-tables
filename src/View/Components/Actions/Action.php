@@ -16,6 +16,8 @@ class Action
 
     public $action;
 
+    public $icon = 'fa-solid fa-eye';
+
     /**
      * Action component
      *
@@ -68,6 +70,19 @@ class Action
     public function gate($gate)
     {
         $this->gate = $gate;
+
+        return $this;
+    }
+
+    /**
+     * Define the icon used for this Action
+     *
+     * @param  string  $iconClasses
+     * @return self
+     */
+    public function icon($iconClasses)
+    {
+        $this->icon = $iconClasses;
 
         return $this;
     }
