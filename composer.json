@@ -43,7 +43,6 @@
             }
         }
     },
-    "minimum-stability": "stable",
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
