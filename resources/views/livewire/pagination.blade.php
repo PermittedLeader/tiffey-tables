@@ -1,5 +1,4 @@
 @if ($paginator->hasPages())
-@php(isset($this->numberOfPaginatorsRendered[$paginator->getPageName()]) ? $this->numberOfPaginatorsRendered[$paginator->getPageName()]++ : $this->numberOfPaginatorsRendered[$paginator->getPageName()] = 1)
 <div class="flex flex-col md:flex-row gap-2 justify-between"> 
     <div>
         <div class="text-sm">
@@ -47,7 +46,7 @@
                 {{-- Array Of Links --}}
                 @if (is_array($element))
                     @foreach ($element as $page => $url)
-                        <span wire:key="paginator-{{ $paginator->getPageName() }}-{{ $this->numberOfPaginatorsRendered[$paginator->getPageName()] }}-page{{ $page }}">
+                        <span wire:key="paginator-{{ $paginator->getPageName() }}">
                             @if($page == $paginator->currentPage())
                                 <x-tiffey::button
                                     disabled="true"
