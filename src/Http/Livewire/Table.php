@@ -52,6 +52,11 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
         return view('tables::livewire.table');
     }
 
+    public function placeholder()
+    {
+        return view('tables::loading');
+    }
+
     /**
      * Query instance for this table
      */
