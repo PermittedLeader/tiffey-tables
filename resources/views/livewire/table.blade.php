@@ -1,4 +1,8 @@
 <div>  
+    @php
+        $colCount = count($this->actions()) > 0 ? count($this->visibleColumns())+1 : count($this->visibleColumns());
+        
+    @endphp
     @if($this->hasMessages())
         <div>
             @foreach($this->messages() as $message)
@@ -70,11 +74,14 @@
             @foreach ($this->filterableColumns() as $column)
                 {{ $column->renderFilter() }}
             @endforeach
-            @if(!empty($this->appliedFilters))
+            
                 <x-slot name="actions"> 
+                    @if(!empty($this->appliedFilters))
                     <x-tiffey::button wire:click="clearFilters()">Clear</x-tiffey::button> 
+                    @endif
+                    <x-tiffey::button wire:click="search()">Apply</x-tiffey::button> 
                 </x-slot>
-            @endif
+            
         </x-tiffey::card>
     @endif
     <div wire:loading class="w-full py-4 h-full text-gray-700 dark:text-gray-50">
@@ -119,7 +126,7 @@
                     <tr class="border-b border-l-4 border-l-transparent hover:border-l-brand-500 hover:bg-gray-50 dark:hover:bg-gray-800">
                         @foreach ($this->visibleColumns() as $column)
                             <td class="">
-                                <div class="max-w-48 p-3">
+                                <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-3">
                                     {{ $column->renderColumn($row[$column->key]) }}
                                 </div>
                             </td>
@@ -143,7 +150,7 @@
                 @empty
                 <tr>
                     <td 
-                        colspan="{{ count($this->actions()) > 0 ? count($this->visibleColumns())+1 : count($this->visibleColumns())  }}"
+                        colspan="{{ $colCount  }}"
                         class="text-center">
                         <x-tables::no-results />
                     </td>
