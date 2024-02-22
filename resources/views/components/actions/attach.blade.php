@@ -1,6 +1,6 @@
 
     @if(is_object($data))
-        <x-tiffey::button wire:click="attach('{{ addslashes(get_class($data)) }}','{{ $data->id }}')" color="bg-success-100">
+        <x-tiffey::button wire:click="attach('{{ addslashes(get_class($data)) }}','{{ $data->id }}')" color="bg-success-light">
             <x-tiffey::icon.attach label="{{ $actionComponent->title }}" />
             {{ $actionComponent->title }}
         </x-tiffey::button>

@@ -7,7 +7,7 @@
     @csrf @method('DELETE')
     <x-tiffey::form-button
         type="submit"
-        color="bg-danger-100"
+        color="bg-danger-light"
     >
     <x-tiffey::icon.delete label="{{ $actionComponent->title }}" />
     </x-tiffey::form-button>
