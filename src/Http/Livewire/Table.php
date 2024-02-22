@@ -54,7 +54,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public function placeholder()
     {
-        return view('tables::loading');
+        return view('tables::components.loading');
     }
 
     /**
