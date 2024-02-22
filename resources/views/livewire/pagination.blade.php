@@ -11,7 +11,7 @@
             {!! __('results') !!}
         </div>
         <span class="hidden md:block">
-            <x-tiffey::input.select label="Per page" wire:model="perPage" inBlock="true">
+            <x-tiffey::input.select label="Per page" wire:model.live="perPage" inBlock="true">
                 <option value="10">10 per page</option>
                 <option value="25">25 per page</option>
                 <option value="50">50 per page</option>
@@ -50,7 +50,7 @@
                             @if($page == $paginator->currentPage())
                                 <x-tiffey::button
                                     disabled="true"
-                                    color="bg-brand-500"
+                                    color="bg-brand-mid"
                                     wire:click="gotoPage({{ $page }}, '{{ $paginator->getPageName() }}')"
                                 >
                                     {{ $page }}
