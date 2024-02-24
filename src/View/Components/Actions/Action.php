@@ -182,7 +182,7 @@ class Action
     {
         $action = new static($routeName,'Edit');
 
-        return $action->component('edit')->gate('update');
+        return $action->component('edit');
     }
 
     /**
@@ -195,7 +195,7 @@ class Action
     {
         $action = new static($routeName,'View');
 
-        return $action->gate('view');
+        return $action;
     }
 
     /**
@@ -208,6 +208,6 @@ class Action
     {
         $action = new static($routeName,'Delete');
 
-        return $action->component('delete')->gate('delete');
+        return $action->component('delete');
     }
 }
