@@ -10,7 +10,7 @@ class Action
 
     public $route;
 
-    public $gate = false;
+    public $gate = true;
 
     public $title = '';
 
@@ -62,12 +62,12 @@ class Action
     }
 
     /**
-     * Define the gate used for this Action
+     * Define if the user should have this action used for this Action
      *
-     * @param  string  $gate
+     * @param  bool  $gate
      * @return self
      */
-    public function gate($gate)
+    public function gate(bool $gate)
     {
         $this->gate = $gate;
 
@@ -134,7 +134,8 @@ class Action
      */
     public function render()
     {
-        return view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => []]);
+        
+        return $this->gate ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => []]) : '';
     }
 
     /**
@@ -145,7 +146,7 @@ class Action
      */
     public function renderForRow($data)
     {
-        return view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => $data]);
+        return $this->gate ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => $data]) : '';
     }
 
     // Convenience functions

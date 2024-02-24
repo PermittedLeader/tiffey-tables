@@ -56,13 +56,7 @@
             @if($this->tableActions())
                 <div class="my-1">
                 @foreach ($this->tableActions() as $action)
-                    @if ($action->gate)
-                        @can($action->gate,$this->query()->getModel())
-                            {{ $action->render() }}
-                        @endcan
-                    @else
-                        {{ $action->render() }}
-                    @endif
+                    {{ $action->render() }}
                 @endforeach
                 </div>
             @endif
@@ -132,13 +126,7 @@
                             <td class="p-3 text-right">
                                 <div class="flex flex-row gap-1 justify-end items-stretch">
                                 @foreach ($this->actions() as $action)
-                                @if ($action->gate)
-                                    @can($action->gate,$row)
-                                        {{ $action->renderForRow($row) }}
-                                    @endcan
-                                @else
                                     {{ $action->renderForRow($row) }}
-                                @endif
                                 @endforeach
                                 </div>
                             </td>
