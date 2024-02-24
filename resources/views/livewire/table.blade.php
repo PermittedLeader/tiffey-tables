@@ -118,7 +118,11 @@
                         @foreach ($this->visibleColumns() as $column)
                             <td class="">
                                 <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-3">
-                                    {{ $column->renderColumn($row[$column->key]) }}
+                                    @if($column->key == '*')
+                                        {{ $column->renderColumn($row) }}
+                                    @else
+                                        {{ $column->renderColumn($row[$column->key]) }}
+                                    @endif
                                 </div>
                             </td>
                         @endforeach
