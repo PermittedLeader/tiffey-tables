@@ -183,7 +183,7 @@ class Action
         $action = new static($routeName,'Edit');
 
         return $action->component('edit')->gate(function($data){
-            return auth()->user()->can('edit',$data);
+            return auth()->user()->can('update',$data);
         });
     }
 
@@ -213,7 +213,7 @@ class Action
         $action = new static($routeName,'Delete');
 
         return $action->component('delete')->gate(function($data){
-            return auth()->user()->can('destroy',$data);
+            return auth()->user()->can('delete',$data);
         });
     }
 }
