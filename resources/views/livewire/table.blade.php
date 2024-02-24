@@ -36,8 +36,8 @@
                 inBlock="true"
             />
             </div>
-            <div class="my-1">
-                <x-tiffey::button wire:click="search()" class="h-full">
+            <div class="my-auto">
+                <x-tiffey::button wire:click="search()">
                     <x-tiffey::icon.search /> Search
                 </x-tiffey::button>
             </div>
