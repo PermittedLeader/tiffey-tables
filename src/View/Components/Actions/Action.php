@@ -10,7 +10,7 @@ class Action
 
     public $route;
 
-    public $gate = true;
+    public Closure|bool $authGate = true;
 
     public $title = '';
 
@@ -67,11 +67,32 @@ class Action
      * @param  bool  $gate
      * @return self
      */
-    public function gate(bool $gate)
+    public function gate(bool|Closure $gate)
     {
-        $this->gate = $gate;
+        if ($gate instanceof Closure) {
+            $this->authGate = $gate;
+        } else {
+            $this->authGate = function ($data) use ($gate) {
+                return $gate;
+            };
+        }
 
         return $this;
+    }
+
+    /**
+     * Get the Route for the component to render
+     *
+     * @param  object|array  $data
+     * @return string
+     */
+    public function getGate($data)
+    {
+        if ($this->authGate instanceof Closure) {
+            return ($this->authGate)($data);
+        } else {
+            return route($this->authGate);
+        }
     }
 
     /**
@@ -135,7 +156,7 @@ class Action
     public function render()
     {
         
-        return $this->gate ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => []]) : '';
+        return $this->getGate([]) ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => []]) : '';
     }
 
     /**
@@ -146,7 +167,7 @@ class Action
      */
     public function renderForRow($data)
     {
-        return $this->gate ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => $data]) : '';
+        return $this->getGate($data) ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => $data]) : '';
     }
 
     // Convenience functions
