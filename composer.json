@@ -6,7 +6,7 @@
         "laravel/framework": "^10.44",
         "livewire/livewire": "^3.0",
         "maatwebsite/excel": "^3.1",
-        "permittedleader/tiffey": "~1.0.x-dev",
+        "permittedleader/tiffey": "~1.0.0",
         "permittedleader/flash-messages": "^2.0"
     },
     "require-dev": {
@@ -29,18 +29,12 @@
     },
     "repositories": {
         "flash-messages": {
-            "type": "path",
-            "url": "../flash-messages",
-            "options": {
-                "symlink": true
-            }
+            "type": "vcs",
+            "url": "https://github.com/PermittedLeader/flash-messages.git"
         },
         "tiffey": {
-            "type": "path",
-            "url": "../tiffey",
-            "options": {
-                "symlink": true
-            }
+            "type": "vcs",
+            "url": "https://github.com/PermittedLeader/tiffey.git"
         }
     },
     "config": {
