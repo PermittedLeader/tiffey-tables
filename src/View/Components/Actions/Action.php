@@ -28,6 +28,8 @@ class Action
     {
         if ($routeName instanceof Closure) {
             $this->route = $routeName;
+        } elseif ($routeName == '') {
+            $this->route = $routeName;
         } else {
             $this->route = function ($data) use ($routeName) {
                 return route($routeName, $data);
