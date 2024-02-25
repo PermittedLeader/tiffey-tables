@@ -6,7 +6,7 @@
         "laravel/framework": "^10.44",
         "livewire/livewire": "^3.0",
         "maatwebsite/excel": "^3.1",
-        "permittedleader/tiffey": "~1.0.0",
+        "permittedleader/tiffey": "^1.0",
         "permittedleader/flash-messages": "^2.0"
     },
     "require-dev": {
