@@ -8,7 +8,7 @@ class Action
 {
     public string $component = 'actions.default';
 
-    public $route;
+    public Closure|string|bool $route = false;
 
     public Closure|bool $authGate = true;
 
@@ -18,23 +18,32 @@ class Action
 
     public $icon = 'fa-solid fa-eye';
 
+    public bool $showLabel = false;
+
+    public const ACTION_LINK = 'link';
+    public const ACTION_LIVEWIRE = 'livewire';
+
     /**
      * Action component
      *
      * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
      * @param  string  $title Title to be displayed
      */
-    public function __construct($routeName, $title)
+    public function __construct($routeName, $title, $method = self::ACTION_LINK)
     {
-        if ($routeName instanceof Closure) {
-            $this->route = $routeName;
-        } elseif ($routeName == '') {
-            $this->route = $routeName;
-        } else {
-            $this->route = function ($data) use ($routeName) {
-                return route($routeName, $data);
-            };
+        if($method == self::ACTION_LINK){
+            if ($routeName instanceof Closure) {
+                $this->route = $routeName;
+            } else {
+                $this->route = function ($data) use ($routeName) {
+                    return route($routeName, $data);
+                };
+            }
+        } elseif ($method == self::ACTION_LIVEWIRE){
+            $this->route = false;
+            $this->action($routeName);
         }
+        
 
         $this->title = $title;
     }
@@ -47,7 +56,23 @@ class Action
      */
     public static function make($routeName, $title)
     {
-        return new static($routeName,$title);
+        return self::makeLink($routeName, $title);
+    }
+
+    /**
+     * Make an Action component
+     *
+     * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
+     * @param  string  $title Title to be displayed
+     */
+    public static function makeLink($routeName, $title)
+    {
+        return new static($routeName,$title, self::ACTION_LINK);
+    }
+
+    public static function makeAction($actionName, $title)
+    {
+        return new static($actionName,$title, self::ACTION_LIVEWIRE);
     }
 
     /**
@@ -147,6 +172,18 @@ class Action
     {
         $this->action = $action;
 
+        return $this;
+    }
+
+    /**
+     * Determine if the label should be shown
+     *
+     * @param boolean $showLabel
+     * @return self
+     */
+    public function showLabel($showLabel = true)
+    {
+        $this->showLabel = $showLabel;
         return $this;
     }
 
