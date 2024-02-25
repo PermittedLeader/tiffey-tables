@@ -118,7 +118,7 @@ class Action
         if ($this->authGate instanceof Closure) {
             return ($this->authGate)($data);
         } else {
-            return route($this->authGate);
+            return $this->authGate;
         }
     }
 
