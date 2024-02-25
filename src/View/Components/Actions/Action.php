@@ -23,6 +23,8 @@ class Action
     public const ACTION_LINK = 'link';
     public const ACTION_LIVEWIRE = 'livewire';
 
+    public string|bool $color = false;
+
     /**
      * Action component
      *
@@ -84,6 +86,19 @@ class Action
     public function component($component)
     {
         $this->component = 'actions.'.$component;
+
+        return $this;
+    }
+
+    /**
+     * Define the color to render the button
+     *
+     * @param  string  $component
+     * @return self
+     */
+    public function color($color)
+    {
+        $this->color = $color;
 
         return $this;
     }
@@ -167,6 +182,21 @@ class Action
     }
 
     /**
+     * Get the action for the component to render
+     *
+     * @param  object|array  $data
+     * @return string
+     */
+    public function getLivewireAction($data)
+    {
+        if ($this->action instanceof Closure) {
+            return ($this->action)($data);
+        } else {
+            return route($this->action);
+        }
+    }
+
+    /**
      * Define an action (e.g. wire:click) for this component
      *
      * @param  string  $action
@@ -177,6 +207,34 @@ class Action
         $this->action = $action;
 
         return $this;
+    }
+
+    /**
+     * Get the action for the component to render
+     *
+     * @param  object|array  $data
+     * @return string
+     */
+    public function getAction($data)
+    {
+        if($this->route){
+            return "href='{$this->getRoute($data)}'";
+        } else {
+            return "wire:click='{$this->getLivewireAction($data)}'";
+        }
+    }
+
+    /**
+     * Get color for the button
+     *
+     * @return string
+     */
+    public function getColor(){
+        if ($this->color){
+            return $this->color;
+        } else {
+            return '';
+        }
     }
 
     /**
