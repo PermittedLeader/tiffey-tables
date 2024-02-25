@@ -94,13 +94,17 @@ class Action
      * @param  bool  $gate
      * @return self
      */
-    public function gate(bool|Closure $gate)
+    public function gate(bool|string|Closure $gate)
     {
         if ($gate instanceof Closure) {
             $this->authGate = $gate;
-        } else {
+        } elseif(is_bool($gate)) {
             $this->authGate = function ($data) use ($gate) {
                 return $gate;
+            };
+        } else {
+            $this->authGate = function ($data) use ($gate) {
+                return auth()->user->can($gate,$data);
             };
         }
 
