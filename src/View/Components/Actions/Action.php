@@ -192,7 +192,7 @@ class Action
         if ($this->action instanceof Closure) {
             return ($this->action)($data);
         } else {
-            return route($this->action);
+            return $this->action;
         }
     }
 
