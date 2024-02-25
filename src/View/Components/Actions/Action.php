@@ -108,7 +108,7 @@ class Action
     }
 
     /**
-     * Get the Route for the component to render
+     * Get the gate to use 
      *
      * @param  object|array  $data
      * @return string
