@@ -218,9 +218,9 @@ class Action
     public function getAction($data)
     {
         if($this->route){
-            return "href='{$this->getRoute($data)}'";
+            return "href=\"".$this->getRoute($data)."\"";
         } else {
-            return "wire:click='{$this->getLivewireAction($data)}'";
+            return "wire:click=\"".$this->getLivewireAction($data)."\"";
         }
     }
 
