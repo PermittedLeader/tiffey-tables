@@ -3,6 +3,7 @@
 namespace Permittedleader\TablesForLaravel\Http\Livewire;
 
 use Carbon\Carbon;
+use ReflectionClass;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
@@ -10,8 +11,8 @@ use Maatwebsite\Excel\Concerns\FromQuery;
 use Maatwebsite\Excel\Concerns\Exportable;
 use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Permittedleader\FlashMessages\FlashMessages;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 use Permittedleader\TablesForLaravel\View\Components\Columns\Column;
 use Permittedleader\TablesForLaravel\View\Components\Columns\Interfaces\UsesRelationships;
 
@@ -46,6 +47,8 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     public bool $detailOnly = false;
 
     public string $exportName = 'table-export';
+
+    public string $messageBag = 'table';
 
     public function render()
     {
@@ -256,5 +259,10 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
         } else {
             return false;
         }
+    }
+
+    public function getMessageBagName()
+    {
+        return (new ReflectionClass($this))->getShortName()."_".$this->messageBag;
     }
 }

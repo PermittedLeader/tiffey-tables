@@ -3,9 +3,9 @@
         $colCount = count($this->actions()) > 0 ? count($this->visibleColumns())+1 : count($this->visibleColumns());
         
     @endphp
-    @if($this->hasMessages())
+    @if($this->hasMessages($this->getMessageBagName()))
         <div>
-            @foreach($this->messages() as $message)
+            @foreach($this->messages($this->getMessageBagName()) as $message)
             <div wire:key="{{ \Illuminate\Support\Str::random() }}">
                 <x-tiffey::alert level="{{ $message['level'] }}" dismissable="{{ $message['dismissable'] }}">
                     @if ($message['title'])

@@ -317,4 +317,17 @@ class Action
             return auth()->user()->can('delete',$data);
         });
     }
+
+    /**
+     * Create a delete component
+     *
+     * @param  Closure|string  $routeName
+     * @return self
+     */
+    public static function attach()
+    {
+        return self::makeAction(function($data){
+            return 'attach('.$data->id.')';
+        },'Attach')->showLabel();
+    }
 }
