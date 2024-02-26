@@ -44,13 +44,13 @@ abstract class BelongsToManyTable extends Table
     public function attach($modelKey){
         $this->model->{$this->relationshipName}()->attach($modelKey);
 
-        self::success('You have successfully attached these items.','Attached',bag: $this->messageBag);
+        self::success('You have successfully attached these items.','Attached',bag: $this->getMessageBagName());
     }
 
     public function detach($modelKey)
     {
         $this->model->{$this->relationshipName}()->detach($modelKey);
 
-        self::success('You have successfully detached these items.','Detached',bag: $this->messageBag);
+        self::success('You have successfully detached these items.','Detached',bag: $this->getMessageBagName());
     }
 }
