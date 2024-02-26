@@ -119,7 +119,7 @@ class Action
             };
         } else {
             $this->authGate = function ($data) use ($gate) {
-                return auth()->user->can($gate,$data);
+                return auth()->user()->can($gate,$data);
             };
         }
 
