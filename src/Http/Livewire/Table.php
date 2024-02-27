@@ -263,6 +263,6 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public function getMessageBagName()
     {
-        return (new ReflectionClass($this))->getShortName()."_".$this->messageBag;
+        return (string)(new ReflectionClass($this))->getShortName()."-".$this->messageBag;
     }
 }
