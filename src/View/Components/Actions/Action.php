@@ -8,9 +8,9 @@ class Action
 {
     public string $component = 'actions.default';
 
-    public $route;
+    public Closure|string|bool $route = false;
 
-    public $gate = false;
+    public Closure|bool $authGate = true;
 
     public $title = '';
 
@@ -18,21 +18,34 @@ class Action
 
     public $icon = 'fa-solid fa-eye';
 
+    public bool $showLabel = false;
+
+    public const ACTION_LINK = 'link';
+    public const ACTION_LIVEWIRE = 'livewire';
+
+    public string|bool $color = false;
+
     /**
      * Action component
      *
      * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
      * @param  string  $title Title to be displayed
      */
-    public function __construct($routeName, $title)
+    public function __construct($routeName, $title, $method = self::ACTION_LINK)
     {
-        if ($routeName instanceof Closure) {
-            $this->route = $routeName;
-        } else {
-            $this->route = function ($data) use ($routeName) {
-                return route($routeName, $data);
-            };
+        if($method == self::ACTION_LINK){
+            if ($routeName instanceof Closure) {
+                $this->route = $routeName;
+            } else {
+                $this->route = function ($data) use ($routeName) {
+                    return route($routeName, $data);
+                };
+            }
+        } elseif ($method == self::ACTION_LIVEWIRE){
+            $this->route = false;
+            $this->action($routeName);
         }
+        
 
         $this->title = $title;
     }
@@ -45,7 +58,23 @@ class Action
      */
     public static function make($routeName, $title)
     {
-        return new static($routeName,$title);
+        return self::makeLink($routeName, $title);
+    }
+
+    /**
+     * Make an Action component
+     *
+     * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
+     * @param  string  $title Title to be displayed
+     */
+    public static function makeLink($routeName, $title)
+    {
+        return new static($routeName,$title, self::ACTION_LINK);
+    }
+
+    public static function makeAction($actionName, $title)
+    {
+        return new static($actionName,$title, self::ACTION_LIVEWIRE);
     }
 
     /**
@@ -62,16 +91,54 @@ class Action
     }
 
     /**
-     * Define the gate used for this Action
+     * Define the color to render the button
      *
-     * @param  string  $gate
+     * @param  string  $component
      * @return self
      */
-    public function gate($gate)
+    public function color($color)
     {
-        $this->gate = $gate;
+        $this->color = $color;
 
         return $this;
+    }
+
+    /**
+     * Define if the user should have this action used for this Action
+     *
+     * @param  bool  $gate
+     * @return self
+     */
+    public function gate(bool|string|Closure $gate)
+    {
+        if ($gate instanceof Closure) {
+            $this->authGate = $gate;
+        } elseif(is_bool($gate)) {
+            $this->authGate = function ($data) use ($gate) {
+                return $gate;
+            };
+        } else {
+            $this->authGate = function ($data) use ($gate) {
+                return auth()->user()->can($gate,$data);
+            };
+        }
+
+        return $this;
+    }
+
+    /**
+     * Get the gate to use 
+     *
+     * @param  object|array  $data
+     * @return string
+     */
+    public function getGate($data)
+    {
+        if ($this->authGate instanceof Closure) {
+            return ($this->authGate)($data);
+        } else {
+            return $this->authGate;
+        }
     }
 
     /**
@@ -115,6 +182,21 @@ class Action
     }
 
     /**
+     * Get the action for the component to render
+     *
+     * @param  object|array  $data
+     * @return string
+     */
+    public function getLivewireAction($data)
+    {
+        if ($this->action instanceof Closure) {
+            return ($this->action)($data);
+        } else {
+            return $this->action;
+        }
+    }
+
+    /**
      * Define an action (e.g. wire:click) for this component
      *
      * @param  string  $action
@@ -128,13 +210,54 @@ class Action
     }
 
     /**
+     * Get the action for the component to render
+     *
+     * @param  object|array  $data
+     * @return string
+     */
+    public function getAction($data)
+    {
+        if($this->route){
+            return ['href'=> $this->getRoute($data)];
+        } else {
+            return ['wire:click'=> $this->getLivewireAction($data)];
+        }
+    }
+
+    /**
+     * Get color for the button
+     *
+     * @return string
+     */
+    public function getColor(){
+        if ($this->color){
+            return $this->color;
+        } else {
+            return '';
+        }
+    }
+
+    /**
+     * Determine if the label should be shown
+     *
+     * @param boolean $showLabel
+     * @return self
+     */
+    public function showLabel($showLabel = true)
+    {
+        $this->showLabel = $showLabel;
+        return $this;
+    }
+
+    /**
      * Render this Action component for the table
      *
      * @return View
      */
     public function render()
     {
-        return view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => []]);
+        
+        return $this->getGate([]) ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => []]) : '';
     }
 
     /**
@@ -145,7 +268,7 @@ class Action
      */
     public function renderForRow($data)
     {
-        return view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => $data]);
+        return $this->getGate($data) ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => $data]) : '';
     }
 
     // Convenience functions
@@ -160,7 +283,9 @@ class Action
     {
         $action = new static($routeName,'Edit');
 
-        return $action->component('edit')->gate('update');
+        return $action->component('edit')->gate(function($data){
+            return auth()->user()->can('update',$data);
+        });
     }
 
     /**
@@ -173,7 +298,9 @@ class Action
     {
         $action = new static($routeName,'View');
 
-        return $action->gate('view');
+        return $action->gate(function($data){
+            return auth()->user()->can('view',$data);
+        });
     }
 
     /**
@@ -186,6 +313,8 @@ class Action
     {
         $action = new static($routeName,'Delete');
 
-        return $action->component('delete')->gate('delete');
+        return $action->component('delete')->gate(function($data){
+            return auth()->user()->can('delete',$data);
+        });
     }
 }

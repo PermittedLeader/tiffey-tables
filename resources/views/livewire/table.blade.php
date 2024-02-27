@@ -3,9 +3,9 @@
         $colCount = count($this->actions()) > 0 ? count($this->visibleColumns())+1 : count($this->visibleColumns());
         
     @endphp
-    @if($this->hasMessages())
+    @if($this->hasMessages($this->getMessageBagName()))
         <div>
-            @foreach($this->messages() as $message)
+            @foreach($this->messages($this->getMessageBagName()) as $message)
             <div wire:key="{{ \Illuminate\Support\Str::random() }}">
                 <x-tiffey::alert level="{{ $message['level'] }}" dismissable="{{ $message['dismissable'] }}">
                     @if ($message['title'])
@@ -36,8 +36,8 @@
                 inBlock="true"
             />
             </div>
-            <div class="my-1">
-                <x-tiffey::button wire:click="search()" class="h-full">
+            <div class="my-auto">
+                <x-tiffey::button wire:click="search()">
                     <x-tiffey::icon.search /> Search
                 </x-tiffey::button>
             </div>
@@ -56,13 +56,7 @@
             @if($this->tableActions())
                 <div class="my-1">
                 @foreach ($this->tableActions() as $action)
-                    @if ($action->gate)
-                        @can($action->gate,$this->query()->getModel())
-                            {{ $action->render() }}
-                        @endcan
-                    @else
-                        {{ $action->render() }}
-                    @endif
+                    {{ $action->render() }}
                 @endforeach
                 </div>
             @endif
@@ -124,7 +118,11 @@
                         @foreach ($this->visibleColumns() as $column)
                             <td class="">
                                 <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-3">
-                                    {{ $column->renderColumn($row[$column->key]) }}
+                                    @if($column->key == '*')
+                                        {{ $column->renderColumn($row) }}
+                                    @else
+                                        {{ $column->renderColumn($row[$column->key]) }}
+                                    @endif
                                 </div>
                             </td>
                         @endforeach
@@ -132,13 +130,7 @@
                             <td class="p-3 text-right">
                                 <div class="flex flex-row gap-1 justify-end items-stretch">
                                 @foreach ($this->actions() as $action)
-                                @if ($action->gate)
-                                    @can($action->gate,$row)
-                                        {{ $action->renderForRow($row) }}
-                                    @endcan
-                                @else
                                     {{ $action->renderForRow($row) }}
-                                @endif
                                 @endforeach
                                 </div>
                             </td>

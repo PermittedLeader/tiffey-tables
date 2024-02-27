@@ -6,8 +6,8 @@
         "laravel/framework": "^10.44",
         "livewire/livewire": "^3.0",
         "maatwebsite/excel": "^3.1",
-        "permittedleader/tiffey": "~1.0.x-dev",
-        "permittedleader/flash-messages": "^1.0"
+        "permittedleader/tiffey": "^1.0",
+        "permittedleader/flash-messages": "^2.0.2-alpha"
     },
     "require-dev": {
         "pestphp/pest": "^2.34",
@@ -29,18 +29,12 @@
     },
     "repositories": {
         "flash-messages": {
-            "type": "path",
-            "url": "../flash-messages",
-            "options": {
-                "symlink": true
-            }
+            "type": "vcs",
+            "url": "https://github.com/PermittedLeader/flash-messages.git"
         },
         "tiffey": {
-            "type": "path",
-            "url": "../tiffey",
-            "options": {
-                "symlink": true
-            }
+            "type": "vcs",
+            "url": "https://github.com/PermittedLeader/tiffey.git"
         }
     },
     "config": {
@@ -53,9 +47,6 @@
             "providers": [
                 "Permittedleader\\TablesForLaravel\\TablesForLaravelServiceProvider"
             ]
-        },
-        "branch-alias": {
-            "dev-main": "1.0.x-dev"
         }
     }
 }
