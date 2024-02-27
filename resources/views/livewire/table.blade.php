@@ -47,14 +47,14 @@
             @if($this->isExportable)
             @can('export',$this->query()->getModel())
             <div class='my-1'>
-                <x-tiffey::button wire:click="export()" class="h-full">
+                <x-tiffey::button wire:click="export()">
                     <x-tiffey::icon icon="fa-solid fa-file-excel" label="Save to Excel" /> Export
                 </x-tiffey::button>
             </div>
             @endcan
             @endif
             @if($this->tableActions())
-                <div class="my-1">
+                <div class="my-1 text-right">
                 @foreach ($this->tableActions() as $action)
                     {{ $action->render() }}
                 @endforeach
