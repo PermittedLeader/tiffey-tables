@@ -210,7 +210,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     #[On('refreshParent')]
     public function refreshFromChild()
     {
-        $this->resetPage();
+        $this->refreshComponent();
     }
 
     /**
