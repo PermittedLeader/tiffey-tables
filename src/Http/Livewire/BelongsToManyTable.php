@@ -9,6 +9,8 @@ use Permittedleader\TablesForLaravel\View\Components\Actions\Action;
 
 abstract class BelongsToManyTable extends Table
 {
+    protected $listeners = [];
+    
     public bool $isSearchable = false;
 
     public bool $isExportable = false;
