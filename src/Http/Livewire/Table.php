@@ -22,6 +22,8 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     use WithPagination;
     use FlashMessages;
 
+    protected $listeners = ['refreshParent'=>'$refresh'];
+
     public bool $isSearchable = false;
 
     public bool $isExportable = false;
