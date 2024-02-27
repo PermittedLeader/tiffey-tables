@@ -13,7 +13,6 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Permittedleader\FlashMessages\FlashMessages;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Livewire\Attributes\On;
 use Permittedleader\TablesForLaravel\View\Components\Columns\Column;
 use Permittedleader\TablesForLaravel\View\Components\Columns\Interfaces\UsesRelationships;
 
@@ -205,12 +204,6 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     public function applyFilters()
     {
         $this->resetPage();
-    }
-
-    #[On('refreshParent')]
-    public function refreshFromChild()
-    {
-        $this->refreshComponent();
     }
 
     /**
