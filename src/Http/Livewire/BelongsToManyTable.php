@@ -34,12 +34,12 @@ abstract class BelongsToManyTable extends Table
                 return 'attach('.$data->id.')';
             },'Attach')->showLabel()->gate(function($data){
                 return !$this->model->{$this->relationshipName}?->contains($data);
-            }),
+            })->icon('fa-solid fa-link'),
             Action::makeAction(function($data){
                 return 'detach('.$data->id.')';
             },'Detach')->showLabel()->gate(function($data){
                 return $this->model->{$this->relationshipName}?->contains($data);
-            })
+            })->icon('fa-solid fa-link-slash')
         ];
     }
 
