@@ -10,7 +10,7 @@ use Permittedleader\TablesForLaravel\View\Components\Actions\Action;
 abstract class BelongsToManyTable extends Table
 {
     protected $listeners = [];
-    
+
     public bool $isSearchable = false;
 
     public bool $isExportable = false;
@@ -33,12 +33,12 @@ abstract class BelongsToManyTable extends Table
             Action::makeAction(function($data){
                 return 'attach('.$data->id.')';
             },'Attach')->showLabel()->gate(function($data){
-                return !$this->model->{$this->relationshipName}->contains($data);
+                return !$this->model->{$this->relationshipName}?->contains($data);
             }),
             Action::makeAction(function($data){
                 return 'detach('.$data->id.')';
             },'Detach')->showLabel()->gate(function($data){
-                return $this->model->{$this->relationshipName}->contains($data);
+                return $this->model->{$this->relationshipName}?->contains($data);
             })
         ];
     }
