@@ -131,7 +131,8 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      */
     public function data()
     {
-        return $this
+        return once(function(){
+            return $this
             ->query()
             ->when(! empty($this->scope), function ($query) {
                 if ($this->scope['type'] == 'relation') {
@@ -165,6 +166,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
                 }
             })
             ->paginate($this->perPage, ['*'], $this->paginatorName);
+        });
     }
 
     /**
