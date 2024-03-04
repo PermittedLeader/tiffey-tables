@@ -125,12 +125,12 @@
             </thead>
             <tbody class="m-2">
                 @forelse ($this->data() as $row)
-                    @if($this->selectable)
-                        <td class="text-sm px-2 py-3 text-left">
-                            <x-tiffey::input.checkbox label="Select this row" inBlock="true" name="selectRow" wire:model="selectedIds" value="{{ $row->id }}" />
-                        </td>
-                    @endif
                     <tr class="border-b border-l-4 border-l-transparent hover:border-l-brand-mid hover:bg-gray-50 dark:hover:bg-gray-800" wire:key="{{ $row->id }}">
+                        @if($this->selectable)
+                            <td class="text-sm px-2 py-3 text-left">
+                                <x-tiffey::input.checkbox label="Select this row" inBlock="true" name="selectRow" wire:model="selectedIds" value="{{ $row->id }}" />
+                            </td>
+                        @endif
                         @foreach ($this->visibleColumns() as $column)
                             <td class="">
                                 <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-3">

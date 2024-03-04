@@ -54,7 +54,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public bool $selectable = true;
 
-    public array $selected = [];
+    public array $selectedIds = [];
 
     public function render()
     {
@@ -272,5 +272,14 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     public function getMessageBagName()
     {
         return (string)(new ReflectionClass($this))->getShortName()."-".$this->messageBag;
+    }
+
+    public function selectAll()
+    {
+        if(blank($this->selectedIds)){
+            $this->selectedIds = []
+        } else {
+            $this->selectedIds = [];
+        }
     }
 }
