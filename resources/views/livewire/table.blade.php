@@ -94,7 +94,7 @@
             <thead class="">
                 @if($this->selectable)
                 <th class="text-sm p-2 text-left border-b-4">
-                    <x-tiffey::input.checkbox label="Select all" inBlock="true" name="selectAll" wire:click="selectAll()"/>
+                    <x-tiffey::input.checkbox label="Select all" inBlock="true" name="selectAll"/>
                 </th>
                 @endif
                 @foreach ($this->visibleColumns() as $column)
@@ -127,7 +127,7 @@
                 @forelse ($this->data() as $row)
                     @if($this->selectable)
                         <td class="text-sm px-2 py-3 text-left">
-                            <x-tiffey::input.checkbox label="Select this row" inBlock="true" name="selectRow" wire:model="selected" value="{{ $row->id }}" />
+                            <x-tiffey::input.checkbox label="Select this row" inBlock="true" name="selectRow" wire:model="selectedIds" value="{{ $row->id }}" />
                         </td>
                     @endif
                     <tr class="border-b border-l-4 border-l-transparent hover:border-l-brand-mid hover:bg-gray-50 dark:hover:bg-gray-800" wire:key="{{ $row->id }}">
