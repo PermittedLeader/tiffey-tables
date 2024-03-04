@@ -47,7 +47,7 @@
             @if($this->isExportable)
             @can('export',$this->query()->getModel())
             <div class='my-1'>
-                <x-tiffey::button wire:click="export()" class="h-full">
+                <x-tiffey::button wire:click="export()">
                     <x-tiffey::icon icon="fa-solid fa-file-excel" label="Save to Excel" /> Export
                 </x-tiffey::button>
             </div>
@@ -78,6 +78,12 @@
             
         </x-tiffey::card>
     @endif
+    <div x-show="$wire.selectedIds > 0" x-cloak>
+        <x-tiffey::card>
+            <span x-text="$wire.selectedIds.length"></span> selected
+        </x-tiffey::card>
+    </div>
+        
     <div wire:loading class="w-full py-4 h-full text-gray-700 dark:text-gray-50">
         <div class="h-full flex align-middle justify-center">
             <x-tables::loading />
@@ -86,6 +92,11 @@
     <div class="w-full overflow-x-auto">
         <table class="w-full">
             <thead class="">
+                @if($this->selectable)
+                <th class="text-sm p-2 text-left border-b-4">
+                    <x-tiffey::input.checkbox label="Select all" inBlock="true" name="selectAll" wire:click="selectAll()"/>
+                </th>
+                @endif
                 @foreach ($this->visibleColumns() as $column)
                     @if ($column->sortable)
                         <th class="text-sm p-2 text-left border-b-4" wire:click="sort('{{ $column->dbField() }}')">
@@ -114,7 +125,12 @@
             </thead>
             <tbody class="m-2">
                 @forelse ($this->data() as $row)
-                    <tr class="border-b border-l-4 border-l-transparent hover:border-l-brand-500 hover:bg-gray-50 dark:hover:bg-gray-800">
+                    @if($this->selectable)
+                        <td class="text-sm px-2 py-3 text-left">
+                            <x-tiffey::input.checkbox label="Select this row" inBlock="true" name="selectRow" wire:model="selected" value="{{ $row->id }}" />
+                        </td>
+                    @endif
+                    <tr class="border-b border-l-4 border-l-transparent hover:border-l-brand-mid hover:bg-gray-50 dark:hover:bg-gray-800" wire:key="{{ $row->id }}">
                         @foreach ($this->visibleColumns() as $column)
                             <td class="">
                                 <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-3">

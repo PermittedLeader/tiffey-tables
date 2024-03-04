@@ -52,6 +52,10 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public string $messageBag = 'table';
 
+    public bool $selectable = true;
+
+    public array $selected = [];
+
     public function render()
     {
         return view('tables::livewire.table');
