@@ -22,6 +22,7 @@ class Action
 
     public const ACTION_LINK = 'link';
     public const ACTION_LIVEWIRE = 'livewire';
+    public const ACTION_CLICK = 'livewire';
 
     public string|bool $color = false;
 
@@ -31,7 +32,7 @@ class Action
      * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
      * @param  string  $title Title to be displayed
      */
-    public function __construct($routeName, $title, $method = self::ACTION_LINK)
+    public function __construct($routeName, $title, private $method = self::ACTION_LINK)
     {
         if($method == self::ACTION_LINK){
             if ($routeName instanceof Closure) {
@@ -75,6 +76,11 @@ class Action
     public static function makeAction($actionName, $title)
     {
         return new static($actionName,$title, self::ACTION_LIVEWIRE);
+    }
+
+    public static function makeClick($action, $title)
+    {
+        return new static($actionName,$title, self::ACTION_CLICK);
     }
 
     /**
@@ -217,23 +223,28 @@ class Action
      */
     public function getAction($data)
     {
-        if($this->route){
-            return ['href'=> $this->getRoute($data)];
-        } else {
-            return ['wire:click'=> $this->getLivewireAction($data)];
+        if($this->method == self::ACTION_LINK){
+            $action =  ['href'=> $this->getRoute($data)];
+        } elseif ($this->method == self::ACTION_LIVEWIRE) {
+            $action = ['wire:click'=> $this->getLivewireAction($data)];
+        } elseif ($this->method == self::ACTION_LINK){
+            $action = ['@click'=> $this->getLivewireAction($data)];
         }
+
+        return array_merge($this->getColor(),$action);
     }
 
     /**
      * Get color for the button
      *
-     * @return string
+     * @return array
      */
-    public function getColor(){
+    public function getColor():array
+    {
         if ($this->color){
-            return $this->color;
+            return ['color'=>$this->color];
         } else {
-            return '';
+            return [];
         }
     }
 
