@@ -56,8 +56,13 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public array $selectedIds = [];
 
+    public bool $selectedAll = false;
+
+    public array $idsOnPage;
+
     public function render()
     {
+        $this->idsOnPage = $this->pagedData()->map(fn ($value) => (string) $value->id)->toArray();
         return view('tables::livewire.table');
     }
 
@@ -168,9 +173,26 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
                         $filter->query($query, $this->appliedFilters[$filter->key]);
                     }
                 }
-            })
-            ->paginate($this->perPage, ['*'], $this->paginatorName);
+            });
         });
+    }
+
+    public function pagedData()
+    {
+        return once(function(){
+            return $this->data()->paginate($this->perPage, ['*'], $this->paginatorName);
+        });
+    }
+
+    public function selectAllPages()
+    {
+        if($this->selectedAll == true){
+            $this->selectedIds = [];
+            $this->selectedAll = false;
+        } else {
+            $this->selectedIds = $this->data()->pluck('id')->map(fn ($value) => (string) $value)->toArray();
+            $this->selectedAll = true;
+        };
     }
 
     /**
@@ -272,14 +294,5 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     public function getMessageBagName()
     {
         return (string)(new ReflectionClass($this))->getShortName()."-".$this->messageBag;
-    }
-
-    public function selectAll()
-    {
-        if(blank($this->selectedIds)){
-            $this->selectedIds = []
-        } else {
-            $this->selectedIds = [];
-        }
     }
 }

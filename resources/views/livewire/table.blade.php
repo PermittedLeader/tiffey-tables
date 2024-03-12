@@ -46,7 +46,7 @@
         @if(!$this->detailOnly)
             @if($this->isExportable)
             @can('export',$this->query()->getModel())
-            <div class='my-1'>
+            <div class='my-auto'>
                 <x-tiffey::button wire:click="export()">
                     <x-tiffey::icon icon="fa-solid fa-file-excel" label="Save to Excel" /> Export
                 </x-tiffey::button>
@@ -54,7 +54,7 @@
             @endcan
             @endif
             @if($this->tableActions())
-                <div class="my-1">
+                <div class="my-auto">
                 @foreach ($this->tableActions() as $action)
                     {{ $action->render() }}
                 @endforeach
@@ -78,12 +78,16 @@
             
         </x-tiffey::card>
     @endif
-    <div x-show="$wire.selectedIds > 0" x-cloak>
+    @if($this->selectable)
+    <div x-show="$wire.selectedIds.length > 0" x-cloak>
         <x-tiffey::card>
             <span x-text="$wire.selectedIds.length"></span> selected
+            <span x-show="$wire.selectedIds.length < {{ $this->pagedData()->total() }}"><x-tiffey::button wire:click="selectAllPages"> Select all pages </x-tiffey::button></span> 
+            <span x-show="$wire.selectedIds.length == {{ $this->pagedData()->total() }}"><x-tiffey::button wire:click="selectAllPages"> Deselect all pages </x-tiffey::button></span>
+            
         </x-tiffey::card>
     </div>
-        
+    @endif
     <div wire:loading class="w-full py-4 h-full text-gray-700 dark:text-gray-50">
         <div class="h-full flex align-middle justify-center">
             <x-tables::loading />
@@ -91,11 +95,9 @@
     </div>
     <div class="w-full overflow-x-auto">
         <table class="w-full">
-            <thead class="">
+            <thead class="border-l-4 border-l-transparent">
                 @if($this->selectable)
-                <th class="text-sm p-2 text-left border-b-4">
-                    <x-tiffey::input.checkbox label="Select all" inBlock="true" name="selectAll"/>
-                </th>
+                <x-tables::select-all />
                 @endif
                 @foreach ($this->visibleColumns() as $column)
                     @if ($column->sortable)
@@ -124,7 +126,7 @@
                 @endif
             </thead>
             <tbody class="m-2">
-                @forelse ($this->data() as $row)
+                @forelse ($this->pagedData() as $row)
                     <tr class="border-b border-l-4 border-l-transparent hover:border-l-brand-mid hover:bg-gray-50 dark:hover:bg-gray-800" wire:key="{{ $row->id }}">
                         @if($this->selectable)
                             <td class="text-sm px-2 py-3 text-left">
@@ -165,9 +167,10 @@
         </table>
     </div>
     <div class="mt-2">
-        {{ $this->data()->links('tables::livewire.pagination') }}
+        {{ $this->pagedData()->links('tables::livewire.pagination') }}
     </div>
     @foreach ($this->modals() as $modal)
         {{ $modal }}
     @endforeach
 </div>
+
