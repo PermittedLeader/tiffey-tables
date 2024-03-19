@@ -12,8 +12,6 @@ class Action
 
     public Closure|bool $authGate = true;
 
-    public $title = '';
-
     public $action;
 
     public $icon = 'fa-solid fa-eye';
@@ -22,7 +20,7 @@ class Action
 
     public const ACTION_LINK = 'link';
     public const ACTION_LIVEWIRE = 'livewire';
-    public const ACTION_CLICK = 'livewire';
+    public const ACTION_CLICK = 'alpine';
 
     public string|bool $color = false;
 
@@ -32,7 +30,7 @@ class Action
      * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
      * @param  string  $title Title to be displayed
      */
-    public function __construct($routeName, $title, private $method = self::ACTION_LINK)
+    public function __construct($routeName, public $title = '', public $method = self::ACTION_LINK)
     {
         if($method == self::ACTION_LINK){
             if ($routeName instanceof Closure) {
@@ -42,13 +40,10 @@ class Action
                     return route($routeName, $data);
                 };
             }
-        } elseif ($method == self::ACTION_LIVEWIRE){
+        } elseif ($method == self::ACTION_LIVEWIRE||$method == self::ACTION_CLICK){
             $this->route = false;
             $this->action($routeName);
         }
-        
-
-        $this->title = $title;
     }
 
     /**
@@ -80,7 +75,7 @@ class Action
 
     public static function makeClick($action, $title)
     {
-        return new static($actionName,$title, self::ACTION_CLICK);
+        return new static($action,$title, self::ACTION_CLICK);
     }
 
     /**
@@ -227,7 +222,7 @@ class Action
             $action =  ['href'=> $this->getRoute($data)];
         } elseif ($this->method == self::ACTION_LIVEWIRE) {
             $action = ['wire:click'=> $this->getLivewireAction($data)];
-        } elseif ($this->method == self::ACTION_LINK){
+        } elseif ($this->method == self::ACTION_CLICK){
             $action = ['@click'=> $this->getLivewireAction($data)];
         }
 
