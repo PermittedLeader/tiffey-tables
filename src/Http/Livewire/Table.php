@@ -52,7 +52,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public string $messageBag = 'table';
 
-    public bool $selectable = true;
+    public bool $selectable = false;
 
     public array $selectedIds = [];
 
