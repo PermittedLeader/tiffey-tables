@@ -259,12 +259,16 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      */
     public function map($row): array
     {
-        $rows = [];
-        foreach ($this->exportableColumns() as $column) {
-            $rows[] = $column->exportValue($row->{$column->key});
+        if(in_array($row->id,$this->selectedIds)){
+            $rows = [];
+            foreach ($this->exportableColumns() as $column) {
+                $rows[] = $column->exportValue($row->{$column->key});
+            }
+    
+            return $rows;
+        } else {
+            return [];
         }
-
-        return $rows;
     }
 
     public function headings(): array
