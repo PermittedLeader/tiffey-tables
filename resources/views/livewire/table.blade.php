@@ -82,15 +82,24 @@
                     </span>
                     <span x-text="$wire.selectedIds.length"></span> selected
                 </div>
-                <div>@if($this->isExportable)
-                    {{-- @can('export',$this->query()->getModel()) --}}
-                    <div class='my-auto'>
-                        <x-tiffey::button wire:click="export()">
-                            <x-tiffey::icon icon="fa-solid fa-file-excel" label="Save to Excel" /> Export
-                        </x-tiffey::button>
-                    </div>
-                    {{-- @endcan --}}
-                    @endif</div>
+                <div>
+                    @if($this->bulkActions())
+                        <div class="my-auto">
+                        @foreach ($this->bulkActions() as $action)
+                            {{ $action->render() }}
+                        @endforeach
+                        </div>
+                    @endif
+                    @if($this->isExportable)
+                        @can('export',$this->query()->getModel())
+                            <div class='my-auto'>
+                                <x-tiffey::button wire:click="export()">
+                                    <x-tiffey::icon icon="fa-solid fa-file-excel" label="Save to Excel" /> Export
+                                </x-tiffey::button>
+                            </div>
+                        @endcan
+                    @endif
+                </div>
             </div>
             
             

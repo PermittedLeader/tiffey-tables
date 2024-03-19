@@ -95,6 +95,11 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
         return [];
     }
 
+    public function bulkActions(): array
+    {
+        return [];
+    }
+
     /**
      * Modals for this table.
      */
