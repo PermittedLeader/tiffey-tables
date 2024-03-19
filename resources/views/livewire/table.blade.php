@@ -44,15 +44,6 @@
         </div>
         @endif
         @if(!$this->detailOnly)
-            @if($this->isExportable)
-            @can('export',$this->query()->getModel())
-            <div class='my-auto'>
-                <x-tiffey::button wire:click="export()">
-                    <x-tiffey::icon icon="fa-solid fa-file-excel" label="Save to Excel" /> Export
-                </x-tiffey::button>
-            </div>
-            @endcan
-            @endif
             @if($this->tableActions())
                 <div class="my-auto">
                 @foreach ($this->tableActions() as $action)
@@ -81,9 +72,27 @@
     @if($this->selectable)
     <div x-show="$wire.selectedIds.length > 0" x-cloak>
         <x-tiffey::card>
-            <span x-text="$wire.selectedIds.length"></span> selected
-            <span x-show="$wire.selectedIds.length < {{ $this->pagedData()->total() }}"><x-tiffey::button wire:click="selectAllPages"> Select all pages </x-tiffey::button></span> 
-            <span x-show="$wire.selectedIds.length == {{ $this->pagedData()->total() }}"><x-tiffey::button wire:click="selectAllPages"> Deselect all pages </x-tiffey::button></span>
+            <div class="flex flex-row justify-between">
+                <div>
+                    <span x-show="$wire.selectedIds.length < {{ $this->pagedData()->total() }}">
+                        <x-tiffey::button wire:click="selectAllPages"> Select all pages </x-tiffey::button>
+                    </span> 
+                    <span x-show="$wire.selectedIds.length == {{ $this->pagedData()->total() }}">
+                        <x-tiffey::button wire:click="selectAllPages"> Deselect all pages </x-tiffey::button>
+                    </span>
+                    <span x-text="$wire.selectedIds.length"></span> selected
+                </div>
+                <div>@if($this->isExportable)
+                    {{-- @can('export',$this->query()->getModel()) --}}
+                    <div class='my-auto'>
+                        <x-tiffey::button wire:click="export()">
+                            <x-tiffey::icon icon="fa-solid fa-file-excel" label="Save to Excel" /> Export
+                        </x-tiffey::button>
+                    </div>
+                    {{-- @endcan --}}
+                    @endif</div>
+            </div>
+            
             
         </x-tiffey::card>
     </div>
@@ -121,7 +130,7 @@
                 @endforeach
                 @if($this->actions() && !$this->detailOnly)
                     <th class="text-sm p-2 text-right border-b-4">
-                        Actions
+                        
                     </th>
                 @endif
             </thead>
@@ -147,9 +156,16 @@
                         @if($this->actions() && !$this->detailOnly)
                             <td class="p-3 text-right">
                                 <div class="flex flex-row gap-1 justify-end items-stretch">
+                                    <x-tiffey::menu>
+                                        <x-slot:button>
+                                            <x-tiffey::button>
+                                            <x-tiffey::icon icon="fa-solid fa-ellipsis" label="More..." />
+                                            </x-tiffey::button>
+                                        </x-slot:button>
                                 @foreach ($this->actions() as $action)
                                     {{ $action->renderForRow($row) }}
                                 @endforeach
+                                    </x-tiffey::menu>
                                 </div>
                             </td>
                         @endif
