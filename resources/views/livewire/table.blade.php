@@ -72,7 +72,8 @@
     @if($this->selectable)
     <div x-show="$wire.selectedIds.length > 0" x-cloak>
         <x-tiffey::card>
-            <div class="flex flex-row justify-between">
+            <x-slot:header><span x-text="$wire.selectedIds.length"></span> selected</x-slot:header>
+            <div class="flex flex-row justify-between gap-2">
                 <div>
                     <span x-show="$wire.selectedIds.length < {{ $this->pagedData()->total() }}">
                         <x-tiffey::button wire:click="selectAllPages"> Select all pages </x-tiffey::button>
@@ -80,9 +81,8 @@
                     <span x-show="$wire.selectedIds.length == {{ $this->pagedData()->total() }}">
                         <x-tiffey::button wire:click="selectAllPages"> Deselect all pages </x-tiffey::button>
                     </span>
-                    <span x-text="$wire.selectedIds.length"></span> selected
                 </div>
-                <div>
+                <div class="flex flex-col md:flex-row gap-2">
                     @if($this->bulkActions())
                         <div class="my-auto">
                         @foreach ($this->bulkActions() as $action)
