@@ -165,6 +165,7 @@
                         @if($this->actions() && !$this->detailOnly)
                             <td class="p-3 text-right">
                                 <div class="flex flex-row gap-1 justify-end items-stretch">
+                                    {{ reset($this->actions())->renderForRow($row) }}
                                     <x-tiffey::menu>
                                         <x-slot:button>
                                             <x-tiffey::button>
