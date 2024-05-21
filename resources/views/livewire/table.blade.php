@@ -147,13 +147,13 @@
                 @forelse ($this->pagedData() as $row)
                     <tr class="border-b border-l-4 border-l-transparent hover:border-l-brand-mid hover:bg-gray-50 dark:hover:bg-gray-800" wire:key="{{ $row->id }}">
                         @if($this->selectable)
-                            <td class="text-sm px-2 py-3 text-left">
+                            <td class="text-sm px-2 py-2 md:py-3 text-left">
                                 <x-tiffey::input.checkbox label="Select this row" inBlock="true" name="selectRow" wire:model="selectedIds" value="{{ $row->id }}" />
                             </td>
                         @endif
                         @foreach ($this->visibleColumns() as $column)
                             <td class="">
-                                <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-3">
+                                <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-2 md:p-3">
                                     @if($column->key == '*')
                                         {{ $column->renderColumn($row) }}
                                     @else
@@ -163,7 +163,7 @@
                             </td>
                         @endforeach
                         @if($this->actions() && !$this->detailOnly)
-                            <td class="p-3 text-right">
+                            <td class="p-2 md:p-3 text-right">
                                 <div class="flex flex-row gap-1 justify-end items-stretch">
                                     {{ head($this->actions())->renderForRow($row) }}
                                     <x-tiffey::menu>
