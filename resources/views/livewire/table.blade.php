@@ -165,17 +165,26 @@
                         @if($this->actions() && !$this->detailOnly)
                             <td class="p-2 md:p-3 text-right">
                                 <div class="flex flex-row gap-1 justify-end items-stretch">
-                                    {{ head($this->actions())->renderForRow($row) }}
+                                   @php
+                                       $actions = [];
+                                       foreach ($this->actions() as $action) {
+                                        $actions[] = $action->renderForRow($row);
+                                       }
+                                       $actions = collect($actions)->filter();
+                                   @endphp
+                                    {{ $actions->first() }}
+                                    @if(count($actions) > 1)
                                     <x-tiffey::menu>
                                         <x-slot:button>
                                             <x-tiffey::button>
                                             <x-tiffey::icon icon="fa-solid fa-ellipsis" label="More..." />
                                             </x-tiffey::button>
                                         </x-slot:button>
-                                @foreach ($this->actions() as $action)
-                                    {{ $action->renderForRow($row) }}
-                                @endforeach
+                                        @foreach ($actions as $action)
+                                            {{ $action }}
+                                        @endforeach
                                     </x-tiffey::menu>
+                                    @endif
                                 </div>
                             </td>
                         @endif
