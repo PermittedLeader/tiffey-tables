@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\View\Components\Columns;
+namespace Permittedleader\Tables\View\Components\Columns;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;

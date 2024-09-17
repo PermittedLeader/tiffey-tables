@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\Traits;
+namespace Permittedleader\Tables\Traits;
 
 use Illuminate\Support\Facades\Cache;
 

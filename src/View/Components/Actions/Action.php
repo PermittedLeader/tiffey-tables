@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\View\Components\Actions;
+namespace Permittedleader\Tables\View\Components\Actions;
 
 use Closure;
 

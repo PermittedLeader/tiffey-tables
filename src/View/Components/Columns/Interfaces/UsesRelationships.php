@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\View\Components\Columns\Interfaces;
+namespace Permittedleader\Tables\View\Components\Columns\Interfaces;
 
 interface UsesRelationships
 {

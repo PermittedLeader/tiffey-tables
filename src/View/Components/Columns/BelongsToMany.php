@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\View\Components\Columns;
+namespace Permittedleader\Tables\View\Components\Columns;
 
 class BelongsToMany extends BelongsTo
 {

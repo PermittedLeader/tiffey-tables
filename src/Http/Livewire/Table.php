@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\Http\Livewire;
+namespace Permittedleader\Tables\Http\Livewire;
 
 use Carbon\Carbon;
 use ReflectionClass;
@@ -13,8 +13,8 @@ use Maatwebsite\Excel\Concerns\WithMapping;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Permittedleader\FlashMessages\FlashMessages;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Permittedleader\TablesForLaravel\View\Components\Columns\Column;
-use Permittedleader\TablesForLaravel\View\Components\Columns\Interfaces\UsesRelationships;
+use Permittedleader\Tables\View\Components\Columns\Column;
+use Permittedleader\Tables\View\Components\Columns\Interfaces\UsesRelationships;
 
 abstract class Table extends Component implements FromQuery, WithHeadings, WithMapping
 {
@@ -143,7 +143,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      *
      * @return Builder
      */
-    public function data()
+    public function data(): Builder
     {
         return once(function(){
             return $this

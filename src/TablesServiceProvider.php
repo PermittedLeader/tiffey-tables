@@ -1,10 +1,10 @@
 <?php
-namespace Permittedleader\TablesForLaravel;
+namespace Permittedleader\Tables;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-class TablesForLaravelServiceProvider extends ServiceProvider
+class TablesServiceProvider extends ServiceProvider
 {
     public function boot()
     {
@@ -15,7 +15,7 @@ class TablesForLaravelServiceProvider extends ServiceProvider
             __DIR__."/../resources/views" => resource_path('views/vendor/tables')
         ],'tables-views');
         $this->loadViewsFrom(__DIR__.'/../resources/views','tables');
-        Blade::componentNamespace('Permittedleader\\TablesForLaravel\\View','tables');
+        Blade::componentNamespace('Permittedleader\\Tables\\View','tables');
     }
 
     public function register()

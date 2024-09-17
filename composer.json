@@ -1,9 +1,9 @@
 {
-    "name": "permittedleader/tables-for-laravel",
+    "name": "permittedleader/tiffey-tables",
     "description": "Tables for Laravel using the Tiffey layout engine",
     "type": "project",
     "require": {
-        "laravel/framework": "^10.44",
+        "laravel/framework": "^10.0",
         "livewire/livewire": "^3.0",
         "maatwebsite/excel": "^3.1",
         "permittedleader/tiffey": "^1.0",
@@ -25,7 +25,7 @@
     "license": "GNU GPLv3",
     "autoload": {
         "psr-4": {
-            "Permittedleader\\TablesForLaravel\\": "src/"
+            "Permittedleader\\Tables\\": "src/"
         }
     },
     "repositories": {
@@ -46,7 +46,7 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Permittedleader\\TablesForLaravel\\TablesForLaravelServiceProvider"
+                "Permittedleader\\Tables\\TablesServiceProvider"
             ]
         }
     }

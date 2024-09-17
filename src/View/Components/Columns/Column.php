@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\View\Components\Columns;
+namespace Permittedleader\Tables\View\Components\Columns;
 
 use Closure;
 use Illuminate\Contracts\Database\Eloquent\Builder;
