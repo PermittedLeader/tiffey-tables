@@ -304,4 +304,24 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     {
         return (string)(new ReflectionClass($this))->getShortName()."-".$this->messageBag;
     }
+
+    public function danger($message, $title = false, $dismissable = false, $actions = false)
+    {
+       return parent::danger($message, $title, $dismissable, $actions, $this->getMessageBagName());
+    }
+
+    public function success($message, $title = false, $dismissable = false, $actions = false)
+    {
+       return parent::success($message, $title, $dismissable, $actions, $this->getMessageBagName());
+    }
+
+    public function warning($message, $title = false, $dismissable = false, $actions = false)
+    {
+       return parent::warning($message, $title, $dismissable, $actions, $this->getMessageBagName());
+    }
+
+    public function info($message, $title = false, $dismissable = false, $actions = false)
+    {
+       return parent::info($message, $title, $dismissable, $actions, $this->getMessageBagName());
+    }
 }
