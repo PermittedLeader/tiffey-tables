@@ -28,16 +28,6 @@
             "Permittedleader\\Tables\\": "src/"
         }
     },
-    "repositories": {
-        "flash-messages": {
-            "type": "vcs",
-            "url": "https://github.com/PermittedLeader/flash-messages.git"
-        },
-        "tiffey": {
-            "type": "vcs",
-            "url": "https://github.com/PermittedLeader/tiffey.git"
-        }
-    },
     "config": {
         "allow-plugins": {
             "pestphp/pest-plugin": true
