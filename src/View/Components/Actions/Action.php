@@ -280,6 +280,21 @@ class Action
     // Convenience functions
 
     /**
+     * Create an create component
+     *
+     * @param  Closure|string  $routeName
+     * @return self
+     */
+    public static function create($routeName)
+    {
+        $action = new static($routeName,'Create');
+
+        return $action->component('create')->gate(function($data){
+            return auth()->user()->can('create',$data);
+        });
+    }
+
+    /**
      * Create an edit component
      *
      * @param  Closure|string  $routeName

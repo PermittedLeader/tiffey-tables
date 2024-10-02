@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Livewire\WithoutUrlPagination;
-use Permittedleader\TablesForLaravel\View\Components\Actions\Action;
+use Permittedleader\Tables\View\Components\Actions\Action;
 
 abstract class BelongsToManyTable extends Table
 {
@@ -36,12 +36,12 @@ abstract class BelongsToManyTable extends Table
         return [
             Action::makeAction(function ($data) {
                 return 'attach('.$data->id.')';
-            }, 'Attach')->showLabel()->gate(function ($data) {
+            }, __('tables::tables.relationships.attach'))->showLabel()->gate(function ($data) {
                 return ! $this->model->{$this->relationshipName}?->contains($data);
             })->icon('fa-solid fa-link'),
             Action::makeAction(function ($data) {
                 return 'detach('.$data->id.')';
-            }, 'Detach')->showLabel()->gate(function ($data) {
+            }, __('tables::tables.relationships.detach'))->showLabel()->gate(function ($data) {
                 return $this->model->{$this->relationshipName}?->contains($data);
             })->icon('fa-solid fa-link-slash'),
         ];
@@ -59,7 +59,7 @@ abstract class BelongsToManyTable extends Table
             $relatedModel->save();
         }
 
-        self::success('You have successfully attached these items.', 'Attached', bag: $this->getMessageBagName());
+        $this->success(__('tables::tables.relationships.attach_message',['relationshipName'=>$this->relationshipName, 'id'=>$modelKey]), __('tables::tables.relationships.attached'));
 
         $this->dispatch('refreshParent');
     }
@@ -76,7 +76,7 @@ abstract class BelongsToManyTable extends Table
             $relatedModel->save();
         }
 
-        self::success('You have successfully detached these items.', 'Detached', bag: $this->getMessageBagName());
+        $this->success(__('tables::tables.relationships.detach_message',['relationshipName'=>$this->relationshipName, 'id'=>$modelKey]), __('tables::tables.relationships.detached'));
 
         $this->dispatch('refreshParent');
     }

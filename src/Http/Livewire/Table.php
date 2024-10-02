@@ -20,7 +20,12 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 {
     use Exportable;
     use WithPagination;
-    use FlashMessages;
+    use FlashMessages {
+        FlashMessages::success as staticSuccess; 
+        FlashMessages::warning as staticWarning;
+        FlashMessages::info as staticInfo;
+        FlashMessages::danger as staticDanger;
+    }
 
     protected $listeners = ['refreshParent'=>'$refresh'];
 
@@ -307,21 +312,21 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public function danger($message, $title = false, $dismissable = false, $actions = false)
     {
-       return parent::danger($message, $title, $dismissable, $actions, $this->getMessageBagName());
+       return self::staticDanger($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 
     public function success($message, $title = false, $dismissable = false, $actions = false)
     {
-       return parent::success($message, $title, $dismissable, $actions, $this->getMessageBagName());
+       return self::staticSuccess($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 
     public function warning($message, $title = false, $dismissable = false, $actions = false)
     {
-       return parent::warning($message, $title, $dismissable, $actions, $this->getMessageBagName());
+       return self::staticWarning($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 
     public function info($message, $title = false, $dismissable = false, $actions = false)
     {
-       return parent::info($message, $title, $dismissable, $actions, $this->getMessageBagName());
+       return self::staticInfo($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 }

@@ -16,6 +16,8 @@ class TablesServiceProvider extends ServiceProvider
         ],'tables-views');
         $this->loadViewsFrom(__DIR__.'/../resources/views','tables');
         Blade::componentNamespace('Permittedleader\\Tables\\View','tables');
+
+        $this->loadTranslationsFrom(__DIR__.'/../lang', 'tables');
     }
 
     public function register()

@@ -4,8 +4,8 @@ namespace Permittedleader\Tables\View\Components\Columns;
 
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
-use Permittedleader\TablesForLaravel\View\Components\Columns\Column;
-use Permittedleader\TablesForLaravel\View\Components\Columns\Interfaces\UsesRelationships;
+use Permittedleader\Tables\View\Components\Columns\Column;
+use Permittedleader\Tables\View\Components\Columns\Interfaces\UsesRelationships;
 
 class BelongsTo extends Column implements UsesRelationships
 {
