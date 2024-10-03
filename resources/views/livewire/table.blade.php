@@ -106,11 +106,6 @@
         </x-tiffey::card>
     </div>
     @endif
-    <div wire:loading class="w-full py-4 h-full text-gray-700 dark:text-gray-50">
-        <div class="h-full flex align-middle justify-center">
-            <x-tables::loading />
-        </div>
-    </div>
     <div class="w-full overflow-x-auto">
         <table class="w-full">
             <thead class="border-l-4 border-l-transparent">
