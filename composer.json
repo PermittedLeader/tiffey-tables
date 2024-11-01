@@ -3,11 +3,11 @@
     "description": "Tables for Laravel using the Tiffey layout engine",
     "type": "project",
     "require": {
-        "laravel/framework": "^10.0",
-        "livewire/livewire": "^3.0",
+        "laravel/framework": ">=10.0",
+        "livewire/livewire": ">=3.0",
         "maatwebsite/excel": "^3.1",
-        "permittedleader/tiffey": "^1.5.0",
-        "permittedleader/flash-messages": "^2.0.2",
+        "permittedleader/tiffey": ">=1.5.0",
+        "permittedleader/flash-messages": ">=2.0.2",
         "spatie/once": "^3.1"
     },
     "require-dev": {
