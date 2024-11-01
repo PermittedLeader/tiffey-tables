@@ -1,6 +1,6 @@
 <?php
 
-namespace Permittedleader\TablesForLaravel\Http\Livewire;
+namespace Permittedleader\Tables\Http\Livewire;
 
 use Carbon\Carbon;
 use Illuminate\Contracts\Database\Eloquent\Builder;
