@@ -1,5 +1,5 @@
 @props(['value'])
 
 <div>
-    {{ \Illuminate\Support\Carbon::make($value)->toFormattedDateString() }}
+    {{ \Illuminate\Support\Carbon::make($value)?->toFormattedDateString() }}
 </div>
