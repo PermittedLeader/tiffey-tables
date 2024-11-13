@@ -154,7 +154,12 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
             return $this
             ->query()
             ->when(! empty($this->scope), function ($query) {
-                if ($this->scope['type'] == 'relation') {
+                if ($this->scope['type'] == 'morph') {
+                    $query->whereMorphedTo(
+                        $this->scope['related'],
+                        $this->scope['value']
+                    );
+                } elseif ($this->scope['type'] == 'relation') {
                     $query->whereHas($this->scope['related'], function ($query) {
                         $query->where(isset($this->scope['key']) ? $this->scope['key'] : 'id', $this->scope['value']);
                     });
