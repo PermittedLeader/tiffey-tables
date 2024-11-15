@@ -27,6 +27,9 @@ class BelongsTo extends Column implements UsesRelationships
                 return '';
             }
         });
+        $this->filterQuery(function ($query, $value) {
+            return $query->whereIn((new ($this->modelClass))->getTable().'.'.(new ($this->modelClass))->getKeyName(), array_keys($value, true));
+        });
     }
 
     /**
@@ -52,11 +55,6 @@ class BelongsTo extends Column implements UsesRelationships
         } else {
             return $this->key.'_'.(new ($this->modelClass))->getKeyName();
         }
-    }
-
-    public function query($query, $value): Builder
-    {
-        return $query->whereIn((new ($this->modelClass))->getTable().'.'.(new ($this->modelClass))->getKeyName(), array_keys($value, true));
     }
 
     /**
