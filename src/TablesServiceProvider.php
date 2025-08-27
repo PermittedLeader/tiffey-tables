@@ -9,7 +9,7 @@ class TablesServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->publishes([
-            __DIR__."/../config/tables.php" => config_path('tiffey.php')
+            __DIR__."/../config/tables.php" => config_path('forms.php')
         ],'tables-config');
         $this->publishes([
             __DIR__."/../resources/views" => resource_path('views/vendor/tables')
