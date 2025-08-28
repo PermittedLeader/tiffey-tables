@@ -287,7 +287,7 @@ class Action
      */
     public static function create($routeName)
     {
-        $action = new static($routeName,'Create');
+        $action = new static($routeName,__('tables::tables.actions.create'));
 
         return $action->component('create')->gate(function($data){
             return auth()->user()->can('create',$data);
@@ -302,7 +302,7 @@ class Action
      */
     public static function edit($routeName)
     {
-        $action = new static($routeName,'Edit');
+        $action = new static($routeName,__('tables::tables.actions.update'));
 
         return $action->component('edit')->gate(function($data){
             return auth()->user()->can('update',$data);
@@ -317,7 +317,7 @@ class Action
      */
     public static function show($routeName)
     {
-        $action = new static($routeName,'View');
+        $action = new static($routeName,__('tables::tables.actions.retrieve'));
 
         return $action->gate(function($data){
             return auth()->user()->can('view',$data);
@@ -332,10 +332,25 @@ class Action
      */
     public static function delete($routeName)
     {
-        $action = new static($routeName,'Delete');
+        $action = new static($routeName,__('tables::tables.actions.destroy'));
 
         return $action->component('delete')->gate(function($data){
             return auth()->user()->can('delete',$data);
+        });
+    }
+
+    /**
+     * Create a restore component
+     *
+     * @param  Closure|string  $routeName
+     * @return self
+     */
+    public static function restore($routeName)
+    {
+        $action = new static($routeName,__('tables::tables.actions.restore'));
+
+        return $action->component('restore')->gate(function($data){
+            return auth()->user()->can('restore',$data);
         });
     }
 }

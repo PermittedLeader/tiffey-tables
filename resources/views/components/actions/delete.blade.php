@@ -2,7 +2,7 @@
 <form
     action="{{ $actionComponent->getRoute($data) }}"
     method="POST"
-    onsubmit="return confirm('{{ __('crud.common.are_you_sure') }}')"
+    onsubmit="return confirm('{{ __('tables::tables.actions.confirm') }}')"
 >
     @csrf @method('DELETE')
     <x-tiffey::form-button
