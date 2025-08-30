@@ -2,6 +2,8 @@
 
 namespace Permittedleader\Tables\View\Components\Columns;
 
+use Permittedleader\Tables\View\Components\Actions\Action;
+
 class SoftDeletes extends Column
 {
     public string $component = 'columns.boolean';
@@ -13,7 +15,7 @@ class SoftDeletes extends Column
     public function __construct($key, $label='')
     {
         if(!$label){
-            $label = __('tables::tables.columns.deleted');
+            $label = __('tables.columns.deleted');
         }
         parent::__construct($key, $label);
 
@@ -33,5 +35,17 @@ class SoftDeletes extends Column
     public static  function make($key = 'deleted_at', $label = '')
     {
         return new static($key,$label);
+    }
+
+    public function actions(): array
+    {
+        return [
+            Action::makeAction(function($data){
+                if(auth()->user()->can('restore'.$data)&&$data->trashed())
+                {
+                    $data->restore();
+                }
+            },__('tables.actions.restore'))->icon('fa-solid fa-recylce')
+        ];
     }
 }

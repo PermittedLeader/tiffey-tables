@@ -251,4 +251,10 @@ class Column extends Component
     {
         return view('tables::components.'.$this->component, ['column', $this]);
     }
+
+    // Define actions to be added when this column is present
+    public function actions(): array
+    {
+        return [];
+    }
 }

@@ -1,6 +1,6 @@
 <div>  
     @php
-        $colCount = count($this->actions()) > 0 ? count($this->visibleColumns())+1 : count($this->visibleColumns());
+        $colCount = count($this->actionsToRender()) > 0 ? count($this->visibleColumns())+1 : count($this->visibleColumns());
         
     @endphp
     @if($this->hasMessages($this->getMessageBagName()))
@@ -132,7 +132,7 @@
                     </th>
                     @endif
                 @endforeach
-                @if($this->actions() && !$this->detailOnly)
+                @if($this->actionsToRender() && !$this->detailOnly)
                     <th class="text-sm p-2 text-right border-b-4">
                         
                     </th>
@@ -157,12 +157,12 @@
                                 </div>
                             </td>
                         @endforeach
-                        @if($this->actions() && !$this->detailOnly)
+                        @if($this->actionsToRender() && !$this->detailOnly)
                             <td class="p-2 md:p-3 text-right">
                                 <div class="flex flex-row gap-1 justify-end items-stretch">
                                    @php
                                        $actions = [];
-                                       foreach ($this->actions() as $action) {
+                                       foreach ($this->actionsToRender() as $action) {
                                         $actions[] = $action->renderForRow($row);
                                        }
                                        $actions = collect($actions)->filter();

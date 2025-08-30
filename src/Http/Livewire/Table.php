@@ -95,6 +95,20 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      */
     abstract public function actions(): array;
 
+    public function actionsToRender(): array
+    {
+        $return = [];
+
+        foreach($this->columns() as $i => $column)
+        {
+            $return = array_merge($return, $column->actions());
+        }
+
+        array_merge($return, $this->actions());
+
+        return $return;
+    }
+
     public function tableActions(): array
     {
         return [];
