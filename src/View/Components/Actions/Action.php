@@ -68,6 +68,13 @@ class Action
         return new static($routeName,$title, self::ACTION_LINK);
     }
 
+    /**
+     * makeAction
+     *
+     * @param Closure|string $actionName Function to load action name to be called
+     * @param string $title
+     * @return self
+     */
     public static function makeAction($actionName, $title)
     {
         return new static($actionName,$title, self::ACTION_LIVEWIRE);
@@ -335,22 +342,13 @@ class Action
         $action = new static($routeName,__('tables::tables.actions.destroy'));
 
         return $action->component('delete')->gate(function($data){
-            return auth()->user()->can('delete',$data);
-        });
-    }
-
-    /**
-     * Create a restore component
-     *
-     * @param  Closure|string  $routeName
-     * @return self
-     */
-    public static function restore($routeName)
-    {
-        $action = new static($routeName,__('tables::tables.actions.restore'));
-
-        return $action->component('restore')->gate(function($data){
-            return auth()->user()->can('restore',$data);
+            if(method_exists($data,'bootSoftDeletes'))
+            {
+                return auth()->user()->can('delete',$data) && !$data->trashed();
+            } else {
+                return auth()->user()->can('delete',$data);
+            }
+            
         });
     }
 }

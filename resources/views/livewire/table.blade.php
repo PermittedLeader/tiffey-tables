@@ -34,6 +34,7 @@
                 placeholder="{{ __('crud.common.search') }}"
                 autocomplete="off"
                 inBlock="true"
+                @keyup.enter="$wire.search()"
             />
             </div>
             <div class="my-auto">

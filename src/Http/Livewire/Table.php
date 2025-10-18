@@ -99,12 +99,12 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     {
         $return = [];
 
+        $return = array_merge($return, $this->actions());
+
         foreach($this->columns() as $i => $column)
         {
             $return = array_merge($return, $column->actions());
         }
-
-        array_merge($return, $this->actions());
 
         return $return;
     }

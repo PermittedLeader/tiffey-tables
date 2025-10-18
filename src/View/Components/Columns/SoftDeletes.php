@@ -2,10 +2,12 @@
 
 namespace Permittedleader\Tables\View\Components\Columns;
 
+use Permittedleader\FlashMessages\FlashMessages;
 use Permittedleader\Tables\View\Components\Actions\Action;
 
 class SoftDeletes extends Column
 {
+    use FlashMessages;
     public string $component = 'columns.boolean';
 
     public string $filterComponent = 'filters.boolean';
@@ -41,11 +43,17 @@ class SoftDeletes extends Column
     {
         return [
             Action::makeAction(function($data){
-                if(auth()->user()->can('restore'.$data)&&$data->trashed())
-                {
-                    $data->restore();
-                }
-            },__('tables.actions.restore'))->icon('fa-solid fa-recylce')
+                return 'restore($data)';
+    
+            },__('tables.actions.restore'))->icon('fa-solid fa-recycle')->gate(function($data){
+                return method_exists($data, 'bootSoftDeletes') && $data->trashed() && auth()->user()->can('restore',$data);
+            })
         ];
+    }
+
+    public function restore($data){
+        $data->restore();
+        
+        self::success(__('tables.actions.restored'));
     }
 }
