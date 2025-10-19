@@ -18,7 +18,10 @@ return [
         'confirm'=>'Are you sure?'
     ],
     'columns' => [
-        'deleted' => 'Deleted'
+        'deleted' => 'Deleted',
+        'collection'=>[
+            'no_items'=>'None',
+            'items'=>'items'
+        ]
     ]
-    
 ];

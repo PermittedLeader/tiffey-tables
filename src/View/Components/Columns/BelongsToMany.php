@@ -6,12 +6,13 @@ class BelongsToMany extends BelongsTo
 {
     public string $filterComponent = 'filters.belongs-to';
 
+    public string $component = 'columns.collection';
+
+    public int $displayCount = 3;
+
     public function __construct($key, $label = '')
     {
         parent::__construct($key, $label);
-        $this->formatDisplay(function ($value) {
-            return $value->implode($this->displayAttribute, ', ');
-        });
     }
 
     /**
@@ -24,5 +25,18 @@ class BelongsToMany extends BelongsTo
         } else {
             return (new ($this->modelClass))->getTable().'.'.(new ($this->modelClass))->getKeyName();
         }
+    }
+
+    /**
+     * Set how many items are displayed
+     *
+     * @param  int  Number of items to display before moving to a menu
+     * @return void
+     */
+    public function displayCount(int $count)
+    {
+        $this->displayCount = $count;
+
+        return $this;
     }
 }
