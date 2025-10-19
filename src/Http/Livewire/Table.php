@@ -101,9 +101,38 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
         $return = array_merge($return, $this->actions());
 
-        foreach($this->columns() as $i => $column)
+        foreach($this->getColumns() as $i => $column)
         {
             $return = array_merge($return, $column->actions());
+        }
+
+        foreach(class_uses($this) as $trait)
+        {
+            $reflection = new ReflectionClass($trait);
+            $methodName = 'actions'.$reflection->getShortName();
+            if(method_exists($trait,$methodName))
+            {
+                $return = array_merge($return, $this->{$methodName}());
+            }
+        }
+
+        return $return;
+    }
+
+    public function getColumns(): array
+    {
+        $return = [];
+
+        $return = array_merge($return, $this->columns());
+
+        foreach(class_uses($this) as $trait)
+        {
+            $reflection = new ReflectionClass($trait);
+            $methodName = 'columns'.$reflection->getShortName();
+            if(method_exists($trait,$methodName))
+            {
+                $return = array_merge($return, $this->{$methodName}());
+            }
         }
 
         return $return;
@@ -132,7 +161,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      */
     public function filterableColumns(): array
     {
-        return array_filter($this->columns(), function (Column $column) {
+        return array_filter($this->getColumns(), function (Column $column) {
             return $column->filterable;
         });
     }
@@ -142,7 +171,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      */
     public function visibleColumns(): array
     {
-        return array_filter($this->columns(), function (Column $column) {
+        return array_filter($this->getColumns(), function (Column $column) {
             return $column->showOnView;
         });
     }
@@ -152,7 +181,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      */
     public function exportableColumns(): array
     {
-        return array_filter($this->columns(), function (Column $column) {
+        return array_filter($this->getColumns(), function (Column $column) {
             return $column->showOnExport;
         });
     }
@@ -181,8 +210,8 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
                     $query->where($this->scope['column'], $this->scope['value']);
                 }
             })
-            ->when($this->columns(), function ($query) {
-                foreach ($this->columns() as $column) {
+            ->when($this->getColumns(), function ($query) {
+                foreach ($this->getColumns() as $column) {
                     if (! empty($this->appliedFilters[$column->key]) && ($column instanceof UsesRelationships)) {
                         $query->whereHas($column->key, function ($query) use ($column) {
                             $column->query($query, $this->appliedFilters[$column->key]);
