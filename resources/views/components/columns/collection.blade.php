@@ -13,7 +13,7 @@
         <x-tiffey::modal>
             <x-slot:button>
                 <x-tiffey::button>
-                {{ count($value) }} {{ __('tables::tables.columns.collection.items') }}
+                {{ count($value) }} {{ $column->itemPlural ?? __('tables::tables.columns.collection.items') }}
                 </x-tiffey::button>
             </x-slot:button>
             <ul class="list-disc list-inside mr-2 md:columns-2 lg:columns-3">

@@ -14,6 +14,8 @@ class Collection extends Column
 
     public $displayAttribute = 'name';
 
+    public $itemPlural = null;
+
     public int $displayCount = 3;
 
     public function __construct($key, $label = '')
@@ -50,6 +52,19 @@ class Collection extends Column
     public function displayCount(int $count)
     {
         $this->displayCount = $count;
+
+        return $this;
+    }
+
+    /**
+     * Set what is displayed as the name of the items
+     *
+     * @param  int  Text to display to describe count of items
+     * @return void
+     */
+    public function itemText(string $text)
+    {
+        $this->itemPlural = $text;
 
         return $this;
     }
