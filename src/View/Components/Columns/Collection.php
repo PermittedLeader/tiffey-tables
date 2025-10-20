@@ -2,6 +2,7 @@
 
 namespace Permittedleader\Tables\View\Components\Columns;
 
+use Illuminate\Support\Collection as IlluminateCollection;
 use Permittedleader\Tables\View\Components\Columns\Column;
 
 class Collection extends Column
@@ -20,6 +21,7 @@ class Collection extends Column
 
     public function __construct($key, $label = '')
     {
+        parent::__construct($key, $label);
         $this->formatDisplay(function ($value) {
             if (is_object($value)) {
                 return $value->{$this->displayAttribute};
@@ -27,7 +29,10 @@ class Collection extends Column
                 return '';
             }
         });
-        parent::__construct($key, $label);
+        $this->formatExport(function (IlluminateCollection $data) {
+            return $data->pluck($this->displayAttribute)->implode('; ');
+        });
+        
     }
 
     /**

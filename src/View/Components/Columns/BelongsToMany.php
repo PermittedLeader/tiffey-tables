@@ -2,6 +2,8 @@
 
 namespace Permittedleader\Tables\View\Components\Columns;
 
+use Illuminate\Support\Collection;
+
 class BelongsToMany extends BelongsTo
 {
     public string $filterComponent = 'filters.belongs-to';
@@ -15,6 +17,9 @@ class BelongsToMany extends BelongsTo
     public function __construct($key, $label = '')
     {
         parent::__construct($key, $label);
+        $this->formatExport(function (Collection $data) {
+            return $data->pluck($this->displayAttribute)->implode('; ');
+        });
     }
 
     /**

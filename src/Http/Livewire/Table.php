@@ -5,6 +5,7 @@ namespace Permittedleader\Tables\Http\Livewire;
 use Carbon\Carbon;
 use ReflectionClass;
 use Livewire\Component;
+use Illuminate\Support\Arr;
 use Livewire\WithPagination;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromQuery;
@@ -322,7 +323,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
         if(in_array($row->id,$this->selectedIds)){
             $rows = [];
             foreach ($this->exportableColumns() as $column) {
-                $rows[] = $column->exportValue($row->{$column->key});
+                $rows[] = $column->exportValue(Arr::get($row, $column->key));
             }
     
             return $rows;
