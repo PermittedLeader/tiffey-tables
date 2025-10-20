@@ -1,5 +1,5 @@
 <div class="flex flex-row justify-center">
-    @if(!empty($this->appliedFilters))
+    @if($this->isFilterable && !empty($this->appliedFilters))
     <div class="w-36 h-36">
         <x-tiffey::icon.cant-find />
     </div>
