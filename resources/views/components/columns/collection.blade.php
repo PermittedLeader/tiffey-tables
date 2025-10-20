@@ -1,5 +1,5 @@
 <div>
-    @if(count($value) == 0)
+    @if(!is_countable($value)||count($value) == 0)
         {{ __('tables::tables.columns.collection.no_items') }}
     @elseif(count($value) <= $column->displayCount)
         @php

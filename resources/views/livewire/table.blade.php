@@ -153,7 +153,7 @@
                                     @if($column->key == '*')
                                         {{ $column->renderColumn($row) }}
                                     @else
-                                        {{ $column->renderColumn($row[$column->key]) }}
+                                        {{ $column->renderColumn(Arr::get($row,$column->key)) }}
                                     @endif
                                 </div>
                             </td>
