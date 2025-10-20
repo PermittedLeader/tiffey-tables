@@ -212,7 +212,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
             })
             ->when($this->getColumns(), function ($query) {
                 foreach ($this->getColumns() as $column) {
-                    if (! empty($this->appliedFilters[$column->key]) && ($column instanceof UsesRelationships)) {
+                    if (($column instanceof UsesRelationships) &&! empty($this->appliedFilters[$column->key])) {
                         $query->whereHas($column->key, function ($query) use ($column) {
                             $column->query($query, $this->appliedFilters[$column->key]);
                         });
