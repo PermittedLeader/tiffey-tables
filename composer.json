@@ -1,7 +1,7 @@
 {
     "name": "permittedleader/tiffey-tables",
     "description": "Tables for Laravel using the Tiffey layout engine",
-    "type": "project",
+    "type": "library",
     "require": {
         "laravel/framework": ">=10.0",
         "livewire/livewire": ">=3.0",
