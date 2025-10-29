@@ -2,6 +2,7 @@
 
 namespace Permittedleader\Tables\View\Components\Columns;
 
+use Closure;
 use Illuminate\Support\Collection;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Permittedleader\Tables\View\Components\Columns\Column;
@@ -16,6 +17,8 @@ class BelongsTo extends Column implements UsesRelationships
     public string $filterComponent = 'filters.belongs-to';
 
     public string $modelClass;
+
+    public Collection|Closure $options;
 
     public function __construct($key, $label = '')
     {
@@ -62,7 +65,20 @@ class BelongsTo extends Column implements UsesRelationships
      */
     public function models(): array|Collection
     {
+        if (isset($this->options) && $this->options instanceof Closure) {
+            return ($this->options)($this->displayAttribute);
+        } elseif (isset($this->options)) {
+            return $this->options;
+        }
+
         return $this->modelClass::orderBy($this->displayAttribute)->get();
+    }
+
+    public function options(Collection|Closure $options): self
+    {
+        $this->options = $options;
+
+        return $this;
     }
 
     /**
