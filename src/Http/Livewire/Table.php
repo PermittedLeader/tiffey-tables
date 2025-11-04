@@ -170,8 +170,22 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     /**
      * Return only visible columns
      */
-    public function visibleColumns(): array
+    public function visibleColumns($mobile = false): array
     {
+        if($mobile)
+        {
+            $return = array_filter($this->getColumns(), function (Column $column) {
+                return $column->showOnMobile;
+            });
+            if(empty($return)){
+                collect(
+                    array_filter($this->getColumns(), function (Column $column) {
+                        return $column->showOnView;
+                    })
+                )->where('key','!=','id')->first();
+            }
+            return $return;
+        }
         return array_filter($this->getColumns(), function (Column $column) {
             return $column->showOnView;
         });

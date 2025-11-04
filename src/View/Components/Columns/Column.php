@@ -34,6 +34,8 @@ class Column extends Component
 
     public bool $showOnView = true;
 
+    public bool $showOnMobile = false;
+
     public function __construct($key, $label = '')
     {
         $this->key = $key;
@@ -190,6 +192,13 @@ class Column extends Component
     public function visibleOnShow(bool $show = true)
     {
         $this->showOnView = $show;
+
+        return $this;
+    }
+
+    public function visibleOnMobile(bool $show = true)
+    {
+        $this->showOnMobile = $show;
 
         return $this;
     }

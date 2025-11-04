@@ -233,6 +233,8 @@ class Action
             $action = ['@click'=> $this->getLivewireAction($data)];
         }
 
+        $action['title'] = $this->title;
+
         return array_merge($this->getColor(),$action);
     }
 
@@ -285,7 +287,7 @@ class Action
     }
 
     // Convenience functions
-
+    
     /**
      * Create an create component
      *
@@ -296,8 +298,8 @@ class Action
     {
         $action = new static($routeName,__('tables::tables.actions.create'));
 
-        return $action->component('create')->gate(function($data){
-            return auth()->user()->can('create',$data);
+        return $action->icon('fa-solid fa-plus')->color('bg-success-light')->gate(function ($data) {
+            return auth()->user()->can('create', $data);
         });
     }
 
@@ -311,8 +313,8 @@ class Action
     {
         $action = new static($routeName,__('tables::tables.actions.update'));
 
-        return $action->component('edit')->gate(function($data){
-            return auth()->user()->can('update',$data);
+        return $action->component('default')->icon('fa-solid fa-pen-to-square')->gate(function ($data) {
+            return auth()->user()->can('update', $data);
         });
     }
 
@@ -326,8 +328,8 @@ class Action
     {
         $action = new static($routeName,__('tables::tables.actions.retrieve'));
 
-        return $action->gate(function($data){
-            return auth()->user()->can('view',$data);
+        return $action->gate(function ($data) {
+            return auth()->user()->can('view', $data);
         });
     }
 
@@ -341,14 +343,13 @@ class Action
     {
         $action = new static($routeName,__('tables::tables.actions.destroy'));
 
-        return $action->component('delete')->gate(function($data){
-            if(method_exists($data,'bootSoftDeletes'))
-            {
-                return auth()->user()->can('delete',$data) && !$data->trashed();
+        return $action->component('default')->icon('fa-solid fa-trash')->color('bg-danger-light')->gate(function ($data) {
+            if (method_exists($data, 'bootSoftDeletes')) {
+                return auth()->user()->can('delete', $data) && ! $data->trashed();
             } else {
-                return auth()->user()->can('delete',$data);
+                return auth()->user()->can('delete', $data);
             }
-            
+
         });
     }
 }
