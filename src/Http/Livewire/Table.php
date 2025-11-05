@@ -3,32 +3,32 @@
 namespace Permittedleader\Tables\Http\Livewire;
 
 use Carbon\Carbon;
-use ReflectionClass;
-use Livewire\Component;
-use Illuminate\Support\Arr;
-use Livewire\WithPagination;
-use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Concerns\FromQuery;
-use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\WithMapping;
-use Maatwebsite\Excel\Concerns\WithHeadings;
-use Permittedleader\FlashMessages\FlashMessages;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Support\Arr;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Maatwebsite\Excel\Concerns\Exportable;
+use Maatwebsite\Excel\Concerns\FromQuery;
+use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithMapping;
+use Maatwebsite\Excel\Facades\Excel;
+use Permittedleader\FlashMessages\FlashMessages;
 use Permittedleader\Tables\View\Components\Columns\Column;
 use Permittedleader\Tables\View\Components\Columns\Interfaces\UsesRelationships;
+use ReflectionClass;
 
 abstract class Table extends Component implements FromQuery, WithHeadings, WithMapping
 {
     use Exportable;
-    use WithPagination;
     use FlashMessages {
-        FlashMessages::success as staticSuccess; 
+        FlashMessages::success as staticSuccess;
         FlashMessages::warning as staticWarning;
         FlashMessages::info as staticInfo;
         FlashMessages::danger as staticDanger;
     }
+    use WithPagination;
 
-    protected $listeners = ['refreshParent'=>'$refresh'];
+    protected $listeners = ['refreshParent' => '$refresh'];
 
     public bool $isSearchable = false;
 
@@ -69,6 +69,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     public function render()
     {
         $this->idsOnPage = $this->pagedData()->map(fn ($value) => (string) $value->id)->toArray();
+
         return view('tables::livewire.table');
     }
 
@@ -102,17 +103,14 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
         $return = array_merge($return, $this->actions());
 
-        foreach($this->getColumns() as $i => $column)
-        {
+        foreach ($this->getColumns() as $i => $column) {
             $return = array_merge($return, $column->actions());
         }
 
-        foreach(class_uses($this) as $trait)
-        {
+        foreach (class_uses($this) as $trait) {
             $reflection = new ReflectionClass($trait);
             $methodName = 'actions'.$reflection->getShortName();
-            if(method_exists($trait,$methodName))
-            {
+            if (method_exists($trait, $methodName)) {
                 $return = array_merge($return, $this->{$methodName}());
             }
         }
@@ -126,12 +124,10 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
         $return = array_merge($return, $this->columns());
 
-        foreach(class_uses($this) as $trait)
-        {
+        foreach (class_uses($this) as $trait) {
             $reflection = new ReflectionClass($trait);
             $methodName = 'columns'.$reflection->getShortName();
-            if(method_exists($trait,$methodName))
-            {
+            if (method_exists($trait, $methodName)) {
                 $return = array_merge($return, $this->{$methodName}());
             }
         }
@@ -168,24 +164,35 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     }
 
     /**
+     * Return only sortable columns
+     */
+    public function sortableColumns(): array
+    {
+        return array_filter($this->getColumns(), function (Column $column) {
+            return $column->sortable;
+        });
+    }
+
+    /**
      * Return only visible columns
      */
     public function visibleColumns($mobile = false): array
     {
-        if($mobile)
-        {
+        if ($mobile) {
             $return = array_filter($this->getColumns(), function (Column $column) {
                 return $column->showOnMobile;
             });
-            if(empty($return)){
+            if (empty($return)) {
                 $return = [collect(
                     array_filter($this->getColumns(), function (Column $column) {
                         return $column->showOnView;
                     })
-                )->where('key','!=','id')->first()];
+                )->where('key', '!=', 'id')->first()];
             }
+
             return $return;
         }
+
         return array_filter($this->getColumns(), function (Column $column) {
             return $column->showOnView;
         });
@@ -203,77 +210,75 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     /**
      * Fetch data for this table and paginate
-     *
-     * @return Builder
      */
     public function data(): Builder
     {
-        return once(function(){
+        return once(function () {
             return $this
-            ->query()
-            ->when(! empty($this->scope), function ($query) {
-                if ($this->scope['type'] == 'morph') {
-                    $query->whereMorphedTo(
-                        $this->scope['related'],
-                        $this->scope['value']
-                    );
-                } elseif ($this->scope['type'] == 'relation') {
-                    $query->whereHas($this->scope['related'], function ($query) {
-                        $query->where(isset($this->scope['key']) ? $this->scope['key'] : 'id', $this->scope['value']);
-                    });
-                } elseif ($this->scope['type'] == 'column') {
-                    $query->where($this->scope['column'], $this->scope['value']);
-                }
-            })
-            ->when($this->getColumns(), function ($query) {
-                foreach ($this->getColumns() as $column) {
-                    if (($column instanceof UsesRelationships) &&! empty($this->appliedFilters[$column->key])) {
-                        $query->whereHas($column->key, function ($query) use ($column) {
-                            $column->query($query, $this->appliedFilters[$column->key]);
+                ->query()
+                ->when(! empty($this->scope), function ($query) {
+                    if ($this->scope['type'] == 'morph') {
+                        $query->whereMorphedTo(
+                            $this->scope['related'],
+                            $this->scope['value']
+                        );
+                    } elseif ($this->scope['type'] == 'relation') {
+                        $query->whereHas($this->scope['related'], function ($query) {
+                            $query->where(isset($this->scope['key']) ? $this->scope['key'] : 'id', $this->scope['value']);
                         });
-                    } elseif ($column instanceof UsesRelationships) {
-                        $query->with($column->key);
+                    } elseif ($this->scope['type'] == 'column') {
+                        $query->where($this->scope['column'], $this->scope['value']);
                     }
-                }
-            })
-            ->when($this->sortBy !== '', function ($query) {
-                $query->orderBy($this->sortBy, $this->sortDirection);
-            })
-            ->when($this->searchString !== '', function ($query) {
-                $query->searchWithFiltering($this->searchString);
-            })
-            ->when(! empty($this->appliedFilters), function ($query) {
-                foreach ($this->filterableColumns() as $filter) {
-                    if (! empty($this->appliedFilters[$filter->key]) && ! ($filter instanceof UsesRelationships)) {
-                        $filter->query($query, $this->appliedFilters[$filter->key]);
+                })
+                ->when($this->getColumns(), function ($query) {
+                    foreach ($this->getColumns() as $column) {
+                        if (($column instanceof UsesRelationships) && ! empty($this->appliedFilters[$column->key])) {
+                            $query->whereHas($column->key, function ($query) use ($column) {
+                                $column->query($query, $this->appliedFilters[$column->key]);
+                            });
+                        } elseif ($column instanceof UsesRelationships) {
+                            $query->with($column->key);
+                        }
                     }
-                }
-            });
+                })
+                ->when($this->sortBy !== '', function ($query) {
+                    $query->orderBy($this->sortBy, $this->sortDirection);
+                })
+                ->when($this->searchString !== '', function ($query) {
+                    $query->searchWithFiltering($this->searchString);
+                })
+                ->when(! empty($this->appliedFilters), function ($query) {
+                    foreach ($this->filterableColumns() as $filter) {
+                        if (! empty($this->appliedFilters[$filter->key]) && ! ($filter instanceof UsesRelationships)) {
+                            $filter->query($query, $this->appliedFilters[$filter->key]);
+                        }
+                    }
+                });
         });
     }
 
     public function pagedData()
     {
-        return once(function(){
+        return once(function () {
             return $this->data()->paginate($this->perPage, ['*'], $this->paginatorName);
         });
     }
 
     public function selectAllPages()
     {
-        if($this->selectedAll == true){
+        if ($this->selectedAll == true) {
             $this->selectedIds = [];
             $this->selectedAll = false;
         } else {
             $this->selectedIds = $this->data()->pluck('id')->map(fn ($value) => (string) $value)->toArray();
             $this->selectedAll = true;
-        };
+        }
     }
 
     /**
      * Apply sort direction and column
      *
-     * @param  string  $key   Key of the column used for sorting
+     * @param  string  $key  Key of the column used for sorting
      * @return void
      */
     public function sort($key)
@@ -334,12 +339,12 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
      */
     public function map($row): array
     {
-        if(in_array($row->id,$this->selectedIds)){
+        if (in_array($row->id, $this->selectedIds)) {
             $rows = [];
             foreach ($this->exportableColumns() as $column) {
                 $rows[] = $column->exportValue(Arr::get($row, $column->key));
             }
-    
+
             return $rows;
         } else {
             return [];
@@ -372,26 +377,26 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
 
     public function getMessageBagName()
     {
-        return (string)(new ReflectionClass($this))->getShortName()."-".$this->messageBag;
+        return (string) (new ReflectionClass($this))->getShortName().'-'.$this->messageBag;
     }
 
     public function danger($message, $title = false, $dismissable = false, $actions = false)
     {
-       return self::staticDanger($message, $title, $dismissable, $actions, $this->getMessageBagName());
+        return self::staticDanger($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 
     public function success($message, $title = false, $dismissable = false, $actions = false)
     {
-       return self::staticSuccess($message, $title, $dismissable, $actions, $this->getMessageBagName());
+        return self::staticSuccess($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 
     public function warning($message, $title = false, $dismissable = false, $actions = false)
     {
-       return self::staticWarning($message, $title, $dismissable, $actions, $this->getMessageBagName());
+        return self::staticWarning($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 
     public function info($message, $title = false, $dismissable = false, $actions = false)
     {
-       return self::staticInfo($message, $title, $dismissable, $actions, $this->getMessageBagName());
+        return self::staticInfo($message, $title, $dismissable, $actions, $this->getMessageBagName());
     }
 }

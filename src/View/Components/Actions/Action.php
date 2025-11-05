@@ -19,7 +19,9 @@ class Action
     public bool $showLabel = false;
 
     public const ACTION_LINK = 'link';
+
     public const ACTION_LIVEWIRE = 'livewire';
+
     public const ACTION_CLICK = 'alpine';
 
     public string|bool $color = false;
@@ -27,12 +29,12 @@ class Action
     /**
      * Action component
      *
-     * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
-     * @param  string  $title Title to be displayed
+     * @param  Closure|string  $routeName  Pass either a closure providing the route or the route name
+     * @param  string  $title  Title to be displayed
      */
     public function __construct($routeName, public $title = '', public $method = self::ACTION_LINK)
     {
-        if($method == self::ACTION_LINK){
+        if ($method == self::ACTION_LINK) {
             if ($routeName instanceof Closure) {
                 $this->route = $routeName;
             } else {
@@ -40,7 +42,7 @@ class Action
                     return route($routeName, $data);
                 };
             }
-        } elseif ($method == self::ACTION_LIVEWIRE||$method == self::ACTION_CLICK){
+        } elseif ($method == self::ACTION_LIVEWIRE || $method == self::ACTION_CLICK) {
             $this->route = false;
             $this->action($routeName);
         }
@@ -49,8 +51,8 @@ class Action
     /**
      * Make an Action component
      *
-     * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
-     * @param  string  $title Title to be displayed
+     * @param  Closure|string  $routeName  Pass either a closure providing the route or the route name
+     * @param  string  $title  Title to be displayed
      */
     public static function make($routeName, $title)
     {
@@ -60,8 +62,8 @@ class Action
     /**
      * Make an Action component
      *
-     * @param  Closure|string  $routeName Pass either a closure providing the route or the route name
-     * @param  string  $title Title to be displayed
+     * @param  Closure|string  $routeName  Pass either a closure providing the route or the route name
+     * @param  string  $title  Title to be displayed
      */
     public static function makeLink($routeName, $title)
     {
@@ -71,8 +73,8 @@ class Action
     /**
      * makeAction
      *
-     * @param Closure|string $actionName Function to load action name to be called
-     * @param string $title
+     * @param  Closure|string  $actionName  Function to load action name to be called
+     * @param  string  $title
      * @return self
      */
     public static function makeAction($actionName, $title)
@@ -121,13 +123,13 @@ class Action
     {
         if ($gate instanceof Closure) {
             $this->authGate = $gate;
-        } elseif(is_bool($gate)) {
+        } elseif (is_bool($gate)) {
             $this->authGate = function ($data) use ($gate) {
                 return $gate;
             };
         } else {
             $this->authGate = function ($data) use ($gate) {
-                return auth()->user()->can($gate,$data);
+                return auth()->user()->can($gate, $data);
             };
         }
 
@@ -135,7 +137,7 @@ class Action
     }
 
     /**
-     * Get the gate to use 
+     * Get the gate to use
      *
      * @param  object|array  $data
      * @return string
@@ -225,28 +227,26 @@ class Action
      */
     public function getAction($data)
     {
-        if($this->method == self::ACTION_LINK){
-            $action =  ['href'=> $this->getRoute($data)];
+        if ($this->method == self::ACTION_LINK) {
+            $action = ['href' => $this->getRoute($data)];
         } elseif ($this->method == self::ACTION_LIVEWIRE) {
-            $action = ['wire:click'=> $this->getLivewireAction($data)];
-        } elseif ($this->method == self::ACTION_CLICK){
-            $action = ['@click'=> $this->getLivewireAction($data)];
+            $action = ['wire:click' => $this->getLivewireAction($data)];
+        } elseif ($this->method == self::ACTION_CLICK) {
+            $action = ['@click' => $this->getLivewireAction($data)];
         }
 
         $action['title'] = $this->title;
 
-        return array_merge($this->getColor(),$action);
+        return array_merge($this->getColor(), $action);
     }
 
     /**
      * Get color for the button
-     *
-     * @return array
      */
-    public function getColor():array
+    public function getColor(): array
     {
-        if ($this->color){
-            return ['color'=>$this->color];
+        if ($this->color) {
+            return ['color' => $this->color];
         } else {
             return [];
         }
@@ -255,12 +255,13 @@ class Action
     /**
      * Determine if the label should be shown
      *
-     * @param boolean $showLabel
+     * @param  bool  $showLabel
      * @return self
      */
     public function showLabel($showLabel = true)
     {
         $this->showLabel = $showLabel;
+
         return $this;
     }
 
@@ -271,7 +272,7 @@ class Action
      */
     public function render()
     {
-        
+
         return $this->getGate([]) ? view('tables::components.'.$this->component, ['actionComponent' => $this, 'data' => []]) : '';
     }
 
@@ -287,7 +288,7 @@ class Action
     }
 
     // Convenience functions
-    
+
     /**
      * Create an create component
      *
@@ -298,7 +299,7 @@ class Action
     {
         $action = new static($routeName,__('tables::tables.actions.create'));
 
-        return $action->component('create')->gate(function ($data) {
+        return $action->component('create')->color('bg-success-light')->gate(function ($data) {
             return auth()->user()->can('create', $data);
         });
     }
