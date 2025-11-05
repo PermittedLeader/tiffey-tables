@@ -178,11 +178,11 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
                 return $column->showOnMobile;
             });
             if(empty($return)){
-                collect(
+                $return = [collect(
                     array_filter($this->getColumns(), function (Column $column) {
                         return $column->showOnView;
                     })
-                )->where('key','!=','id')->first();
+                )->where('key','!=','id')->first()];
             }
             return $return;
         }

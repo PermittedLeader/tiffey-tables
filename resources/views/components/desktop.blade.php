@@ -64,7 +64,7 @@
                                 <x-tiffey::menu>
                                     <x-slot:button>
                                         <x-tiffey::button>
-                                        <x-tiffey::icon icon="fa-solid fa-ellipsis" label="More..." />
+                                            <x-tiffey::icon icon="fa-solid fa-ellipsis" label="{{ __('tables::tables.more') }}" />
                                         </x-tiffey::button>
                                     </x-slot:button>
                                     @foreach ($actions as $action)

@@ -1,30 +1,40 @@
 <div class="block md:hidden w-full">
-    <div class="w-full border-l-4 border-l-transparent flex flex-row">
-        @php
-            $column = collect($this->visibleColumns())->first();
-        @endphp
-        <div class="text-sm p-2 text-left border-b-4" @click.stop="">
-            @if($this->selectable)
+    <div class="w-full border-l-4 border-l-transparent border-b-4 grid grid-cols-{{ count($this->visibleColumns(mobile: true))+1 }} gap-2">
+        @if($this->selectable)
+            <div class="text-sm p-2 text-left font-bold" @click.stop="">
                 <x-tables::select-all />
-            @endif
-        </div>
-        
-        <div class="text-sm p-2 text-left border-b-4 flex-grow">
-            {{ $column->label }}
-        </div>
+            </div>
+        @endif
+        @foreach ($this->visibleColumns(mobile: true) as $column)
+            <div class="text-sm px-2 py-2 md:py-3 text-left  my-auto">
+                {{ $column->label }}
+            </div>
+        @endforeach
     </div>
-    <div>
+    <div class="">
         @forelse ($this->pagedData() as $row)
+        <div class="">
             <x-tiffey::modal>
                 <x-slot:button>
-                    <div class="flex flex-row border-b border-l-4 border-l-transparent hover:border-l-brand-mid hover:bg-gray-50 dark:hover:bg-gray-800">
+                    <div class="w-full flex flex-row border-b border-l-4 border-l-transparent hover:border-l-brand-mid hover:bg-gray-50 dark:hover:bg-gray-800 cursor-pointer py-2">
                         @if($this->selectable)
                             <div class="text-sm px-2 py-2 md:py-3 text-left" @click.stop="">
                                 <x-tiffey::input.checkbox label="Select this row" inBlock="true" name="selectRow" wire:model="selectedIds" value="{{ $row->id }}" />
                             </div>
                         @endif
-                        <div class="text-sm px-2 py-2 md:py-3 text-left flex-grow">
-                            {{ $column->renderColumn(Arr::get($row,$column->key)) }}
+                        <div class="flex-grow grid grid-cols-{{ count($this->visibleColumns(mobile: true))+1 }} ">
+                            
+                            @foreach ($this->visibleColumns(mobile: true) as $column)
+                                <div class="text-sm px-2 py-2 md:py-3 text-left flex-grow my-auto">
+                                    {{ $column->renderColumn(Arr::get($row,$column->key)) }}
+                                </div>
+                            @endforeach
+                            
+                        </div>
+                        <div class="my-auto pr-2 justify-end">
+                                <x-tiffey::button title="{{ __('tables::tables.more') }}">
+                                    <x-tiffey::icon icon="fa-solid fa-ellipsis" label="{{ __('tables::tables.more') }}" />
+                                </x-tiffey::button>
                         </div>
                     </div>
                 </x-slot:button>
@@ -62,6 +72,8 @@
                 </div>
                 
             </x-tiffey::modal>
+        </div>
+            
         @empty
         <div class="text-center">
             <x-tables::no-results />

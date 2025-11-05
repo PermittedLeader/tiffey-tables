@@ -23,5 +23,6 @@ return [
             'no_items'=>'None',
             'items'=>'items'
         ]
-    ]
+        ],
+    'more'=>'More...'
 ];
