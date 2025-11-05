@@ -8,8 +8,8 @@
                 @if ($column->sortable)
                     <th class="text-sm p-2 text-left border-b-4" wire:click="sort('{{ $column->dbField() }}')">
                         {{ $column->label }}
-                        @if ($sortBy === $column->key)
-                            @if ($sortDirection === 'asc')
+                        @if ($this->sortBy === $column->key)
+                            @if ($this->sortDirection === 'asc')
                                 <x-tiffey::icon icon="fa-solid fa-sort-up" label="Sort Ascending" />
                             @else
                                 <x-tiffey::icon icon="fa-solid fa-sort-down" label="Sort Descending" />
@@ -40,7 +40,7 @@
                     @endif
                     @foreach ($this->visibleColumns() as $column)
                         <td class="">
-                            <div class="max-w-[1/{{ $colCount > 6 ? '6' : $colCount }}] p-2 md:p-3">
+                            <div class="max-w-[1/{{ max(count($this->visibleColumns()),6) }}] p-2 md:p-3">
                                 @if($column->key == '*')
                                     {{ $column->renderColumn($row) }}
                                 @else
@@ -79,7 +79,7 @@
             @empty
             <tr>
                 <td 
-                    colspan="{{ $colCount  }}"
+                    colspan="{{ count($this->visibleColumns()) }}"
                     class="text-center">
                     <x-tables::no-results />
                 </td>

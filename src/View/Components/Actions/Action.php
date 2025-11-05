@@ -298,7 +298,7 @@ class Action
     {
         $action = new static($routeName,__('tables::tables.actions.create'));
 
-        return $action->icon('fa-solid fa-plus')->color('bg-success-light')->gate(function ($data) {
+        return $action->component('create')->gate(function ($data) {
             return auth()->user()->can('create', $data);
         });
     }
