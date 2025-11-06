@@ -38,7 +38,9 @@
                             
                             @foreach ($this->visibleColumns(mobile: true) as $column)
                                 <div class="text-sm px-2 py-2 md:py-3 text-left flex-grow my-auto">
-                                    {{ $column->renderColumn(Arr::get($row,$column->key)) }}
+                                    <p class="line-clamp-2">
+                                        {{ $column->renderColumn(Arr::get($row,$column->key)) }}
+                                    </p>
                                 </div>
                             @endforeach
                             

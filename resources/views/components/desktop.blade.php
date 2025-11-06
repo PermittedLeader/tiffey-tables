@@ -1,5 +1,5 @@
 <div class="hidden md:block w-full overflow-x-auto">
-    <table class="w-full">
+    <table class="w-full table-auto">
         <thead class="border-l-4 border-l-transparent">
             @if($this->selectable)
             <x-tables::select-all />
@@ -40,12 +40,14 @@
                     @endif
                     @foreach ($this->visibleColumns() as $column)
                         <td class="">
-                            <div class="max-w-[1/{{ max(count($this->visibleColumns()),6) }}] p-2 md:p-3">
-                                @if($column->key == '*')
-                                    {{ $column->renderColumn($row) }}
-                                @else
-                                    {{ $column->renderColumn(Arr::get($row,$column->key)) }}
-                                @endif
+                            <div class="p-2 md:p-3">
+                                <p class="line-clamp-2">
+                                    @if($column->key == '*')
+                                        {{ $column->renderColumn($row) }}
+                                    @else
+                                        {{ $column->renderColumn(Arr::get($row,$column->key)) }}
+                                    @endif
+                                    </p>
                             </div>
                         </td>
                     @endforeach
