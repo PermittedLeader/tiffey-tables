@@ -344,7 +344,7 @@ class Action
     {
         $action = new static($routeName,__('tables::tables.actions.destroy'));
 
-        return $action->component('default')->icon('fa-solid fa-trash')->color('bg-danger-light')->gate(function ($data) {
+        return $action->component('delete')->gate(function ($data) {
             if (method_exists($data, 'bootSoftDeletes')) {
                 return auth()->user()->can('delete', $data) && ! $data->trashed();
             } else {
