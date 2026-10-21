@@ -3,7 +3,7 @@
 namespace Permittedleader\Tables\Http\Livewire;
 
 use Carbon\Carbon;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
 use Livewire\Component;
 use Livewire\WithPagination;
