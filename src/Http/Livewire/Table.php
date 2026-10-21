@@ -81,7 +81,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     /**
      * Query instance for this table
      */
-    abstract public function query(): Builder;
+    abstract public function query(): \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation;
 
     /**
      * Columns in the table
@@ -211,7 +211,7 @@ abstract class Table extends Component implements FromQuery, WithHeadings, WithM
     /**
      * Fetch data for this table and paginate
      */
-    public function data(): Builder
+    public function data(): \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation
     {
         return once(function () {
             return $this

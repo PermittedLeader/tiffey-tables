@@ -2,7 +2,6 @@
 
 namespace Permittedleader\Tables\Http\Livewire;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -27,7 +26,7 @@ abstract class BelongsToManyTable extends Table
 
     public Model $model;
 
-    abstract public function query(): Builder;
+    abstract public function query(): \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation;
 
     abstract public function columns(): array;
 

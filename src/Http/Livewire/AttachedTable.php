@@ -3,7 +3,6 @@
 namespace Permittedleader\Tables\Http\Livewire;
 
 use Permittedleader\Tables\Http\Livewire\Table;
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,7 +16,7 @@ abstract class AttachedTable extends Table
 
     public string $relationshipName;
 
-    abstract public function query(): Builder;
+    abstract public function query(): \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation;
 
     abstract public function columns(): array;
 

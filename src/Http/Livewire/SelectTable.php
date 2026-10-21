@@ -2,7 +2,6 @@
 
 namespace Permittedleader\Tables\Http\Livewire;
 
-use Illuminate\Contracts\Database\Eloquent\Builder;
 use Livewire\WithoutUrlPagination;
 use Permittedleader\Tables\View\Components\Actions\Action;
 use Permittedleader\Tables\View\Components\Columns\Column;
@@ -29,7 +28,7 @@ class SelectTable extends Table
     public string $displayAttributeLabel = 'Name';
     public string $displayAttribute = 'name';
 
-    public function query(): Builder
+    public function query(): \Illuminate\Database\Query\Builder|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Relations\Relation
     {
         return (new $this->model)::query();
     }
